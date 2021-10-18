@@ -1,0 +1,28 @@
+{
+  "name": "decision-table-backend",
+  "version": "1.0.0",
+  "description": "Backend for the Decision Table Editor Tool.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx tsc && node build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Web-Based-Decision-Table-Editor-Tool/decision-table-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Web-Based-Decision-Table-Editor-Tool/decision-table-backend/issues"
+  },
+  "homepage": "https://github.com/Web-Based-Decision-Table-Editor-Tool/decision-table-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.1",
+    "typescript": "^4.4.4"
+  }
+}
