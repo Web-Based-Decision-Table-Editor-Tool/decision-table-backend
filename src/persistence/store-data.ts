@@ -1,11 +1,14 @@
 import fs from 'fs';
+import { DecisionTable } from '../types/decision-table';
 
-const storeData = (data: any, path: string) => {
+const basePath = '../../fileStore/';
+
+const storeTable = (table: DecisionTable) => {
     try {
-        fs.writeFileSync(path, JSON.stringify(data))
+        fs.writeFileSync(`${basePath}${table.id}.json`, JSON.stringify(table))
     } catch (err) {
         console.error(err)
     }
 }
 
-export default storeData;
+export default storeTable;

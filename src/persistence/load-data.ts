@@ -1,12 +1,16 @@
 import fs from 'fs';
+import { DecisionTable } from '../types/decision-table';
 
-const loadData = (path: string): any => {
+const basePath = '../../fileStore/'
+
+const loadTable = (tableId: string): DecisionTable | null => {
     try {
-        return fs.readFileSync(path, 'utf8')
+        const val : DecisionTable =  JSON.parse(fs.readFileSync(`${basePath}${tableId}.json`, 'utf8'));
+        return val;
     } catch (err) {
         console.error(err)
-        return false
+        return null;
     }
 }
 
-export default loadData;
+export default loadTable;

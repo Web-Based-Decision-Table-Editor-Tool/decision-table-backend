@@ -13,8 +13,12 @@ actionController.post('/action/:tableId', async function(req, res){
         name: "dummy action",
         items: [] 
     };
-    const action = addAction(req.params.tableId, testAction);
-    res.send(action);
+    try{
+        const result = addAction(req.params.tableId, testAction);
+        res.send(result);
+    } catch(err){
+        res.send("bad request\n")
+    }
 });
 
 export default actionController;
