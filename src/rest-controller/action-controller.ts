@@ -13,6 +13,8 @@ actionController.post('/action/:tableId', async function(req, res){
         name: "dummy action",
         items: [] 
     };
+    console.log(req.body.course);
+
     try{
         const result = addAction(req.params.tableId, testAction);
         res.send(result);
