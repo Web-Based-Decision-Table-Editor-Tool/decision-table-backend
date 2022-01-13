@@ -1,7 +1,7 @@
 import express, {Application, Request, Response} from 'express';
-import actionController from './rest-controller/action-controller';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import defaultRouter from './routes/routes';
 
 const app: Application = express();
 const port: number = 3000;
@@ -15,10 +15,6 @@ app.listen(port, ()=> {
 });
 
 // body parser to parse req body as json
-app.use(
-    cors(),
-    bodyParser.urlencoded({extended: true}),
-    bodyParser.json()
-);
-
-app.use(actionController);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/", defaultRouter);
