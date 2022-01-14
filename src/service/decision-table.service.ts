@@ -45,7 +45,7 @@ export default class decisionTableService{
     public async deleteTable(id: string): Promise<ITableResponse> {
         try {
             this.persistence.deleteTableWithId(id);
-            return { id: id, status: 204}
+            return { id, status: 200}
         } catch (error) {
             return { id: "", status: 404}
         }
