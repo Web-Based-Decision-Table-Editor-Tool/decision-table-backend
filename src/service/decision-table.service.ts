@@ -1,44 +1,44 @@
 import { ITableResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
-import storeTable from "../persistence/store-data";
+import decisionTablePersistence from "../persistence/decision-table.persistence";
 
 export default class decisionTableService{
+    lastId: number;
+    persistence: decisionTablePersistence
+    
+    constructor(){
+        this.persistence = new decisionTablePersistence();
+        this.lastId = -1;
+    }
 
     public async addTable(name: string, note: string): Promise<ITableResponse> {
         return await this.addNewTable(name, note);
     }
 
     private async addNewTable(name: string, note: string){
-        console.log(`addNewTable called with ${name}, ${note}`);
+        //reject empty name
+        if(name.trim().length == 0){
+            return {id: "", status: 400}
+        }
+
+        const id = await this.generateTableId()
         const table : DecisionTable = {
-            id : `${name}_1`,
+            id,
             name,
             note,
-            email : "testEmail@test.com",
+            email : "",
             lastUsedDate : new Date()
         }
-        storeTable(table);
+
+        this.persistence.saveTable(table);
         return { id: table.id, status: 201};
     }
-    // public async getTask(id: string): Promise<ITableResponse> {
-    //     return await this.getTaskByID(id);
-    // }
-    
-    // private async getTaskByID(id: string) {
-    //     try {
-    //       const filter = { _id: id };
-    //       const task = await Task.findOne(filter);
-    //       if (!task) {
-    //         const message = "Task not found";
-    //         const status = 500;
-    //         return { message, status };
-    //       }
-    //       const status = 200;
-    //       return { task: [task], status };
-    //     } catch (err) {
-    //       const message = "Error occured while adding task";
-    //       const status = 404;
-    //       return { message, status };
-    //     }
-    //  }
+
+    private async generateTableId(){
+        if(this.lastId == -1){
+            this.lastId = await this.persistence.getLastAssignedId();
+        }
+        this.lastId++;
+        return `dt_${this.lastId}`;
+    }
 }

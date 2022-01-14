@@ -14,7 +14,6 @@ app.listen(port, ()=> {
     console.log('Server successfully started on port ' + port);
 });
 
-// body parser to parse req body as json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", defaultRouter);
