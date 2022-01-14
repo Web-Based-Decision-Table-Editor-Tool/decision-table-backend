@@ -19,4 +19,11 @@ export class decisionTableController {
             res.status(500);
         }
     }
+
+    public deleteTable = async (req: Request, res: Response): Promise<void> => {
+        const tableId = req.params.id;
+        const response : ITableResponse = await this.service.deleteTable(tableId);
+        const { id, status } = response;
+        res.status(status).json({ id });
+    }
 }
