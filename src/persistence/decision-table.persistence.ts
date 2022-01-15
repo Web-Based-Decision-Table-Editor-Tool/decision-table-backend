@@ -56,8 +56,14 @@ export default class decisionTablePersistence{
         return Number(lastId);
     }
     
-    public async deleteTableWithId(id: string){
-        fs.unlinkSync(`${this.baseDir}${id}.json`);
+    public deleteTableWithId(id: string): boolean{
+        let filePath = `${this.baseDir}${id}.json`
+        if(fs.existsSync(filePath)){
+            fs.unlinkSync(filePath);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private verifyFileStore(){

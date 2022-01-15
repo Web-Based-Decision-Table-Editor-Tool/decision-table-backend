@@ -22,8 +22,17 @@ export class decisionTableController {
 
     public deleteTable = async (req: Request, res: Response): Promise<void> => {
         const tableId = req.params.id;
-        const response : ITableResponse = await this.service.deleteTable(tableId);
-        const { id, status } = response;
-        res.status(status).json({ id });
+        const response = await this.service.deleteTable(tableId);
+        if(this.isITableResponse(response)){
+            const { id, status } = response;
+            res.status(status).json({ id });
+        }else{
+            res.status(response.status).json(response);
+        }
     }
+
+    private isITableResponse(object: any): object is ITableResponse{
+        return 'id' in object && 'note' in object;
+    }
+    
 }
