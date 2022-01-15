@@ -1,6 +1,6 @@
 import decisionTableService from '../service/decision-table.service';
 import { Request, Response } from "express";
-import { ITableResponse } from '../types/interfaces';
+import { ITableResponse, ITableNameResponse } from '../types/interfaces';
 
 export class decisionTableController {
 
@@ -15,12 +15,12 @@ export class decisionTableController {
             //1 for PUT
             debugger;
             const { id, name } = req.body;
-            const response : ITableResponse = await this.service.changeTableName(id, name);
+            const response : ITableNameResponse = await this.service.changeTableName(id, name);
             
             const status = response.status;
-            const responseTableID = response.id;
-            res.status(status).json({ responseTableID });
-            
+            const tableName = response.name;
+            res.status(status).json({ tableName, status});
+
         } catch {
             res.status(500);
         }
@@ -48,4 +48,14 @@ export class decisionTableController {
         const { id, status } = response;
         res.status(status).json({ id });
     }
+
+    public getTableNameById = async (req: Request, res: Response): Promise<void> => {
+        //1 for DELETE
+        debugger;
+        const tableId = req.params.id;
+        const response : ITableNameResponse = await this.service.getTableNameById(tableId);
+        const { name, status } = response;
+        res.status(status).json({ name, status });
+    }
+
 }
