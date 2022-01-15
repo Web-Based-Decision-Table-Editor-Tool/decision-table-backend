@@ -72,8 +72,13 @@ export default class decisionTablePersistence{
     }
 
     public async changeTableNameById(id: string, newName: string) {
-        console.log("hello");
-        console.log(id);
-        console.log(newName);
+        const dt : DecisionTable | null = this.loadTable("dt_5");
+        
+        if(dt == null) {
+            console.error("No such table with matching ID exists. No changes made.")
+        } else {
+            dt.name = newName;
+            this.saveTable(dt);
+        }
     }
 }
