@@ -16,6 +16,9 @@ export default class decisionTableService{
     }
 
     private async addNewTable(name: string, note: string){
+
+        //2 for POST
+        debugger;
         //reject empty name
         if(name.trim().length == 0){
             return {id: "", status: 400}
@@ -35,6 +38,9 @@ export default class decisionTableService{
     }
 
     private async generateTableId(){
+
+        //3 for POST
+        debugger;
         if(this.lastId == -1){
             this.lastId = await this.persistence.getLastAssignedId();
         }
@@ -43,9 +49,21 @@ export default class decisionTableService{
     }
 
     public async deleteTable(id: string): Promise<ITableResponse> {
+        //2 FOR DELETE
+        debugger;
         try {
             this.persistence.deleteTableWithId(id);
             return { id, status: 200}
+        } catch (error) {
+            return { id: "", status: 404}
+        }
+    }
+
+    public async changeTableName(id: string, newName: string): Promise<ITableResponse> {
+        debugger;
+        try {
+            this.persistence.changeTableNameById(id, newName);
+            return {id, status: 200}
         } catch (error) {
             return { id: "", status: 404}
         }

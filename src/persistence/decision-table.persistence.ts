@@ -9,6 +9,7 @@ export default class decisionTablePersistence{
     }
 
     public loadTable(tableId: string): DecisionTable | null {
+        debugger;
         try {
             const val : DecisionTable =  JSON.parse(fs.readFileSync(`${this.baseDir}${tableId}.json`, 'utf8'));
             return val;
@@ -19,6 +20,8 @@ export default class decisionTablePersistence{
     }
 
     public saveTable(table: DecisionTable) {
+        //4 for POST
+        debugger;
         //check if file store exists, if not then create it
         this.verifyFileStore();
         try {
@@ -57,6 +60,8 @@ export default class decisionTablePersistence{
     }
     
     public async deleteTableWithId(id: string){
+        //3 for DELETE
+        debugger;
         fs.unlinkSync(`${this.baseDir}${id}.json`);
     }
 
@@ -64,5 +69,11 @@ export default class decisionTablePersistence{
         if(!fs.existsSync(this.baseDir)){
             fs.mkdirSync(this.baseDir);
         }
+    }
+
+    public async changeTableNameById(id: string, newName: string) {
+        console.log("hello");
+        console.log(id);
+        console.log(newName);
     }
 }

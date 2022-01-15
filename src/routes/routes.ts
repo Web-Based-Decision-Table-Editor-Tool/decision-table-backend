@@ -8,6 +8,8 @@ const decisionTableRouter = Router();
 
 decisionTableRouter.post("/", decisionTable.addTable);
 decisionTableRouter.delete("/:id", decisionTable.deleteTable);
+decisionTableRouter.put("/", decisionTable.changeTableNameById);
+
 //decisionTableRouter.get("/", decisionTable.getTable);
 
 defaultRouter.use("/table", decisionTableRouter);
