@@ -45,9 +45,10 @@ export default class decisionTableService{
     public async deleteTable(id: string): Promise<ITableResponse | ErrorResponse> {
         let isDeleted = this.persistence.deleteTableWithId(id);
         if(isDeleted){
-            if(id == `dt_${this.lastId}`){
-                this.lastId = await this.persistence.getLastAssignedId();
-            }
+            // disabled & may be removed -> now creating a table after deleting will still increment the id
+            //if(id == `dt_${this.lastId}`){
+                //this.lastId = await this.persistence.getLastAssignedId();
+            //}
             return {id, status: 200}
         }else{
             return { msg: `Unable to delete file with id:${id}`, status: 404}

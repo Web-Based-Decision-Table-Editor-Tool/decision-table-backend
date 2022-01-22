@@ -48,5 +48,4 @@ Examples:
 
 | dec_name       | dec_note          | dec_tag | dec_response_code | Comment             |
 | ""               | "NoteRS03"          | "dt_X"   | 400               | empty name          |
-| "<p>RobSab14</p>"| "<p>NoteRobSab14</p>" | "dt_13" | 400                | HTML injection     |
 

@@ -61,4 +61,18 @@ async function createDecTable(dec_name, dec_note){
   return response.body.id;
 }
 
-module.exports = { startServer, shutdown, resetFileStore, createDecTable };
+/* 
+Utility function that only returns true the first time it is called
+& returns false all the time except the first time
+This function can be called in logic which only needs to be executed once the lifetime of the tests
+*/
+let executionFlag = true;
+let isExecutingFirstTime = function(){
+    let toExecute = executionFlag;
+    if(executionFlag){
+        executionFlag = false;
+    }
+    return toExecute;
+}
+
+module.exports = { startServer, shutdown, resetFileStore, createDecTable, isExecutingFirstTime };
