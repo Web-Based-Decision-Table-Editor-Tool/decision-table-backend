@@ -1,4 +1,4 @@
-import { ITableResponse, ITableNameResponse } from "../types/interfaces";
+import { ITableResponse, ITableNameResponse, ErrorResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
 
@@ -38,24 +38,23 @@ export default class decisionTableService{
     }
 
     private async generateTableId(){
-
-        //3 for POST
-        debugger;
-        if(this.lastId == -1){
+        if(this.lastId < 0){
             this.lastId = await this.persistence.getLastAssignedId();
         }
         this.lastId++;
         return `dt_${this.lastId}`;
     }
 
-    public async deleteTable(id: string): Promise<ITableResponse> {
-        //2 FOR DELETE
-        debugger;
-        try {
-            this.persistence.deleteTableWithId(id);
-            return { id, status: 200}
-        } catch (error) {
-            return { id: "", status: 404}
+    public async deleteTable(id: string): Promise<ITableResponse | ErrorResponse> {
+        let isDeleted = this.persistence.deleteTableWithId(id);
+        if(isDeleted){
+            // disabled & may be removed -> now creating a table after deleting will still increment the id
+            //if(id == `dt_${this.lastId}`){
+                //this.lastId = await this.persistence.getLastAssignedId();
+            //}
+            return {id, status: 200}
+        }else{
+            return { msg: `Unable to delete file with id:${id}`, status: 404}
         }
     }
 
