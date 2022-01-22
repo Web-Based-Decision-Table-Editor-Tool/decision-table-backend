@@ -20,7 +20,9 @@
   "homepage": "https://github.com/Web-Based-Decision-Table-Editor-Tool/decision-table-backend#readme",
   "dependencies": {
     "cors": "^2.8.4",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

@@ -1,7 +1,9 @@
+import { Container } from 'typedi';
 import { Router } from "express";
 import { decisionTableController } from "../rest-controller/decision-table.controller";
 
-const decisionTable = new decisionTableController();
+// getting an instance of controller (typeDI will inject class dependencies)
+const decisionTable = Container.get(decisionTableController);
 
 const defaultRouter = Router();
 const decisionTableRouter = Router();
