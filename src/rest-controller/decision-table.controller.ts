@@ -1,12 +1,12 @@
+import { Service } from 'typedi';
 import decisionTableService from '../service/decision-table.service';
 import { Request, Response } from "express";
 import { ITableResponse, ITableNameResponse } from '../types/interfaces';
 
+@Service()
 export class decisionTableController {
 
-    service: decisionTableService;
-    constructor() {
-      this.service = new decisionTableService();
+    constructor(private service : decisionTableService) {
     }
 
 

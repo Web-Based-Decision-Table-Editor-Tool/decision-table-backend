@@ -1,13 +1,13 @@
+import { Service } from 'typedi';
 import { ITableResponse, ITableNameResponse, ErrorResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
 
+@Service()
 export default class decisionTableService{
     lastId: number;
-    persistence: decisionTablePersistence
     
-    constructor(){
-        this.persistence = new decisionTablePersistence();
+    constructor(private persistence : decisionTablePersistence){
         this.lastId = -1;
     }
 

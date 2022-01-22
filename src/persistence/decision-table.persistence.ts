@@ -1,6 +1,8 @@
+import { Service } from 'typedi';
 import fs from 'fs';
 import { DecisionTable } from '../types/decision-table';
 
+@Service()
 export default class decisionTablePersistence{
     
     baseDir = './fileStore/'
