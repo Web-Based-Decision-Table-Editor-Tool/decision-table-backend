@@ -1,3 +1,4 @@
+@DeleteDecisionTableFeature
 Feature: Delete a Decision Table
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
