@@ -12,8 +12,6 @@ export class decisionTableController {
 
     public changeTableNameById = async (req: Request, res: Response): Promise<void> => {
         try {
-            //1 for PUT
-            debugger;
             const { id, name } = req.body;
             const response : ITableNameResponse = await this.service.changeTableName(id, name);
             
@@ -29,8 +27,6 @@ export class decisionTableController {
 
     public addTable = async (req: Request, res: Response): Promise<void> => {
         try {
-            //1 for POST
-            debugger;
             const { name, note } = req.body;
             const response : ITableResponse = await this.service.addTable(name, note);
             const { id, status } = response;
@@ -41,8 +37,6 @@ export class decisionTableController {
     }
 
     public deleteTable = async (req: Request, res: Response): Promise<void> => {
-        //1 for DELETE
-        debugger;
         const tableId = req.params.id;
         const response = await this.service.deleteTable(tableId);
         if(this.isITableResponse(response)){
@@ -58,8 +52,6 @@ export class decisionTableController {
     }
 
     public getTableNameById = async (req: Request, res: Response): Promise<void> => {
-        //1 for DELETE
-        debugger;
         const tableId = req.params.id;
         const response : ITableNameResponse = await this.service.getTableNameById(tableId);
         const { name, status } = response;
