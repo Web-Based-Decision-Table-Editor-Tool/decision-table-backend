@@ -1,5 +1,5 @@
 
-Feature: Create a Decision Table Story
+Feature: Create Decision Table Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
 I want to create a new empty decision table

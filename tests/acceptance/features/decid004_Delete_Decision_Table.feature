@@ -1,5 +1,5 @@
 @DeleteDecisionTableFeature
-Feature: Delete a Decision Table Story
+Feature: Delete Decision Table Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
 I want to delete an existing decision table
