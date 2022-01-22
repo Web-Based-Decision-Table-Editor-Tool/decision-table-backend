@@ -1,4 +1,4 @@
-import { ErrorResponse, ITableResponse } from "../types/interfaces";
+import { ITableResponse, ITableNameResponse, ErrorResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
 
@@ -16,6 +16,9 @@ export default class decisionTableService{
     }
 
     private async addNewTable(name: string, note: string){
+
+        //2 for POST
+        debugger;
         //reject empty name
         if(name.trim().length == 0){
             return {id: "", status: 400}
@@ -54,4 +57,26 @@ export default class decisionTableService{
             return { msg: `Unable to delete file with id:${id}`, status: 404}
         }
     }
+
+    public async changeTableName(id: string, newName: string): Promise<ITableNameResponse> {
+        debugger;
+        try {
+            const name = await this.persistence.changeTableNameById(id, newName);
+            return { name, status: 200}
+        } catch (error) {
+            return { name: "", status: 404}
+        }
+    }
+
+    public async getTableNameById(id: string): Promise<ITableNameResponse> {
+        debugger;
+        try {
+            const name = await this.persistence.getTableNameById(id);
+            return {name, status: 200}
+        } catch (error) {
+            return { name: "", status: 404}
+        }
+    }
+
+    
 }

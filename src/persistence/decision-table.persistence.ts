@@ -9,6 +9,7 @@ export default class decisionTablePersistence{
     }
 
     public loadTable(tableId: string): DecisionTable | null {
+        debugger;
         try {
             const val : DecisionTable =  JSON.parse(fs.readFileSync(`${this.baseDir}${tableId}.json`, 'utf8'));
             return val;
@@ -19,6 +20,8 @@ export default class decisionTablePersistence{
     }
 
     public saveTable(table: DecisionTable) {
+        //4 for POST
+        debugger;
         //check if file store exists, if not then create it
         this.verifyFileStore();
         try {
@@ -70,5 +73,29 @@ export default class decisionTablePersistence{
         if(!fs.existsSync(this.baseDir)){
             fs.mkdirSync(this.baseDir);
         }
+    }
+
+    public async changeTableNameById(id: string, newName: string): Promise<string> {
+        const dt : DecisionTable | null = this.loadTable(id);
+        
+        if(dt == null) {
+            throw("No such table with matching ID exists. No changes made.")
+        } else {
+            dt.name = newName;
+            this.saveTable(dt);
+            return dt.name;
+        }
+    }
+
+    public async getTableNameById(id: string): Promise<string> {
+
+        const dt : DecisionTable | null = this.loadTable(id);
+
+        if(dt == null) {
+            throw("No such table with matching ID exists. No changes made.")
+        } else {
+            return dt.name;
+        }
+
     }
 }
