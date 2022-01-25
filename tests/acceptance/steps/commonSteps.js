@@ -1,7 +1,7 @@
-const { startServer, shutdown, resetFileStore, isExecutingFirstTime } = require('./TestUtils')
+const { startServer, resetFileStore } = require('./TestUtils')
 const chai = require("chai");
 const expect = require("chai").expect;
-const { Given, Then, BeforeAll, AfterAll, Before } = require("@cucumber/cucumber");
+const { Given, BeforeAll, AfterAll } = require("@cucumber/cucumber");
 
 const host = 'localhost:3000'
 // start the server
@@ -18,28 +18,6 @@ AfterAll({timeout: 15 * 1000}, async function(){
     try {
     } catch (err) {
         console.log(err);
-    }
-})
-
-/*
-Background: 
-'Before' normally executes before every scenario of every feature file
-Therefore, tags is added so that 'Before' is only executed for the features identified in tags
-More tags can be added for the features that require this logic to execute only before the first scenario
-
-Behaviour: 
-The logic resets the filestore, shutsdown the server and restarts the server. 
-*/
-Before({tags: "@DeleteDecisionTableFeature"}, async function () {
-    try {
-        // Only execute this logic before the first scenario of DeleteDecisionTableFeature
-        if(isExecutingFirstTime()){
-            await resetFileStore();
-            await shutdown();
-            await startServer();
-        }
-    } catch (err) {
-          console.log(err);
     }
 })
 
