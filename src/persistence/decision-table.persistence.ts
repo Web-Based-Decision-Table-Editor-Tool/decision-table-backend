@@ -75,6 +75,11 @@ export default class decisionTablePersistence{
     }
 
     public async changeTableNameById(id: string, newName: string): Promise<string> {
+
+        if(newName == "") {
+            throw("Cannot set table name to empty string")
+        }
+        
         const dt : DecisionTable | null = this.loadTable(id);
         
         if(dt == null) {

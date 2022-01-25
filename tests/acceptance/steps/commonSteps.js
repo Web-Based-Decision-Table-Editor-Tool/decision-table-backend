@@ -2,6 +2,8 @@ const { startServer, shutdown, resetFileStore, isExecutingFirstTime } = require(
 const chai = require("chai");
 const expect = require("chai").expect;
 const { Given, Then, BeforeAll, AfterAll, Before } = require("@cucumber/cucumber");
+const { createDecTable } = require('./TestUtils');
+
 
 const host = 'localhost:3000'
 // start the server
@@ -43,6 +45,19 @@ Before({tags: "@DeleteDecisionTableFeature"}, async function () {
     }
 })
 
+Before({tags: "@ChangeDecisionTableNameFeature"}, async function () {
+    try {
+        // Only execute this logic before the first scenario of DeleteDecisionTableFeature
+        if(isExecutingFirstTime()){
+            await resetFileStore();
+            await shutdown();
+            await startServer();
+        }
+    } catch (err) {
+          console.log(err);
+    }
+})
+ 
 Given('I am connected to the Decision_Table_Editor_Cloud_Services',  async function () {
     response = await chai.request(host).get("/");
     expect(response).to.have.status(200);
@@ -56,6 +71,9 @@ Given('Persistence layer is reset',  async function () {
     }
 });
 
-
+Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
+    let tableId = await createDecTable(dec_name, "table description");
+    expect(tableId).to.equal(dec_tag);
+});
 
 

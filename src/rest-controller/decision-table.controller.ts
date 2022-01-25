@@ -12,12 +12,13 @@ export class decisionTableController {
 
     public changeTableNameById = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { id, name } = req.body;
-            const response : ITableNameResponse = await this.service.changeTableName(id, name);
+            const id = req.body.id;
+            const tableName = req.body.name
+            const response : ITableNameResponse = await this.service.changeTableName(id, tableName);
             
             const status = response.status;
-            const tableName = response.name;
-            res.status(status).json({ tableName, status});
+            const name = response.name;
+            res.status(status).json({ name, status});
 
         } catch {
             res.status(500);

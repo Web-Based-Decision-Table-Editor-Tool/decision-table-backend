@@ -59,9 +59,9 @@ export default class decisionTableService{
     public async changeTableName(id: string, newName: string): Promise<ITableNameResponse> {
         try {
             const name = await this.persistence.changeTableNameById(id, newName);
-            return { name, status: 200}
+            return { name, status: 201}
         } catch (error) {
-            return { name: "", status: 404}
+            return { name: "", status: 400}
         }
     }
 

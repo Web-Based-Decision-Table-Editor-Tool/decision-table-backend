@@ -9,11 +9,6 @@ const host = 'localhost:3000';
 
 var decid004Response = null;
 
-Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
-    let tableId = await createDecTable(dec_name, "table description");
-    expect(tableId).to.equal(dec_tag);
-});
-
 When('I delete the Decision Table {string}', async function(dec_tag){
     decid004Response = await chai.request(host).delete(`/table/${dec_tag}`);
 });
