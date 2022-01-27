@@ -22,41 +22,6 @@ AfterAll({timeout: 15 * 1000}, async function(){
         console.log(err);
     }
 })
-
-/*
-Background: 
-'Before' normally executes before every scenario of every feature file
-Therefore, tags is added so that 'Before' is only executed for the features identified in tags
-More tags can be added for the features that require this logic to execute only before the first scenario
-
-Behaviour: 
-The logic resets the filestore, shutsdown the server and restarts the server. 
-*/
-Before({tags: "@DeleteDecisionTableFeature"}, async function () {
-    try {
-        // Only execute this logic before the first scenario of DeleteDecisionTableFeature
-        if(isExecutingFirstTime()){
-            await resetFileStore();
-            await shutdown();
-            await startServer();
-        }
-    } catch (err) {
-          console.log(err);
-    }
-})
-
-Before({tags: "@ChangeDecisionTableNameFeature"}, async function () {
-    try {
-        // Only execute this logic before the first scenario of DeleteDecisionTableFeature
-        if(isExecutingFirstTime()){
-            await resetFileStore();
-            await shutdown();
-            await startServer();
-        }
-    } catch (err) {
-          console.log(err);
-    }
-})
  
 Given('I am connected to the Decision_Table_Editor_Cloud_Services',  async function () {
     response = await chai.request(host).get("/");
