@@ -1,13 +1,9 @@
 const { startServer, resetFileStore } = require('./TestUtils')
 const chai = require("chai");
 const expect = require("chai").expect;
-<<<<<<< HEAD
 const { Given, Then, BeforeAll, AfterAll, Before } = require("@cucumber/cucumber");
 const { createDecTable } = require('./TestUtils');
 
-=======
-const { Given, BeforeAll, AfterAll } = require("@cucumber/cucumber");
->>>>>>> dev
 
 const host = 'localhost:3000'
 // start the server
@@ -26,11 +22,7 @@ AfterAll({timeout: 15 * 1000}, async function(){
         console.log(err);
     }
 })
-<<<<<<< HEAD
  
-=======
-
->>>>>>> dev
 Given('I am connected to the Decision_Table_Editor_Cloud_Services',  async function () {
     response = await chai.request(host).get("/");
     expect(response).to.have.status(200);
