@@ -7,7 +7,7 @@ const { createDecTable } = require('./TestUtils');
 
 const host = 'localhost:3000'
 // start the server
-BeforeAll({timeout: 15 * 1000}, async function (){
+BeforeAll({timeout: 15 * 2000}, async function (){
     try {
         await resetFileStore();
         await startServer();
@@ -16,7 +16,7 @@ BeforeAll({timeout: 15 * 1000}, async function (){
     }
 })
 
-AfterAll({timeout: 15 * 1000}, async function(){
+AfterAll({timeout: 15 * 2000}, async function(){
     try {
     } catch (err) {
         console.log(err);
