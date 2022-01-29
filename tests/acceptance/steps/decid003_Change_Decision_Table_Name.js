@@ -8,7 +8,7 @@ const { resetFileStore, shutdown, startServer } = require('./TestUtils');
 chai.use(chaiHttp);
 const host = 'localhost:3000';
 
-var decid004Response = null;
+var decid003Response;
 
 /*
  Background: 
@@ -19,7 +19,7 @@ var decid004Response = null;
  The logic resets the filestore, shutsdown the server and restarts the server. 
  */
  let executeOnce = false;
- Before({tags: "@DeleteDecisionTableFeature"}, async function () {
+ Before({tags: "@ChangeDecisionTableNameFeature"}, async function () {
      try {
          // Only execute this logic before the first scenario of DeleteDecisionTableFeature
          if(!executeOnce){
@@ -33,27 +33,18 @@ var decid004Response = null;
      }
  })
 
-When('I delete the Decision Table {string}', async function(dec_tag){
-    decid004Response = await chai.request(host).delete(`/table/${dec_tag}`);
+
+When('I change the name of Decision Table {string} to {string}', async function(dec_tag, new_dec_name) {
+    decid003Response = await chai.request(host).put("/table").send({ id: dec_tag, name: new_dec_name});
 });
 
-When('I delete a decision table with invlaid tag {string}', async function(dec_tag){
-    decid004Response = await chai.request(host).delete(`/table/${dec_tag}`);
+Then('I receive the new name matching {string}', function(new_dec_name) {
+    expect(decid003Response.body.name).to.equal(new_dec_name);
 });
 
-Then('I receive identifier deleted as tag {string}', async function(dec_tag){
-    expect(decid004Response.body.id).to.equal(dec_tag);
+Then('I receive an error code as {int} for name change', function (dec_response_code) {
+    expect(decid003Response.status).to.equal(dec_response_code);
 });
-
-Then('I receive an error code for delete request as {int}', async function(dec_response_code){
-    expect(decid004Response).to.have.status(dec_response_code);
-});
-
-Then('I receive an error code as {int} and error message as {string}', async function(dec_response_code, dec_msg){
-    expect(decid004Response).to.have.status(dec_response_code);
-    expect(decid004Response.body.msg).to.equal(dec_msg)
-});
-
 
 
 

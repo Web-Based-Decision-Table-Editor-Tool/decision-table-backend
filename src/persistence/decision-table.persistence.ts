@@ -11,7 +11,6 @@ export default class decisionTablePersistence{
     }
 
     public loadTable(tableId: string): DecisionTable | null {
-        debugger;
         try {
             const val : DecisionTable =  JSON.parse(fs.readFileSync(`${this.baseDir}${tableId}.json`, 'utf8'));
             return val;
@@ -22,8 +21,6 @@ export default class decisionTablePersistence{
     }
 
     public saveTable(table: DecisionTable) {
-        //4 for POST
-        debugger;
         //check if file store exists, if not then create it
         this.verifyFileStore();
         try {
@@ -78,6 +75,11 @@ export default class decisionTablePersistence{
     }
 
     public async changeTableNameById(id: string, newName: string): Promise<string> {
+
+        if(newName == "") {
+            throw("Cannot set table name to empty string")
+        }
+        
         const dt : DecisionTable | null = this.loadTable(id);
         
         if(dt == null) {
