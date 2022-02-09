@@ -21,7 +21,14 @@ export class actionController {
     }
 
     public updateActionById = async (req: Request, res: Response): Promise<void> => {
-        res.sendStatus(204);
+        try {
+            const { id, actionId, name, type, valueList } = req.body;
+            const changedActionId = await this.actionService.changeAction(id, actionId, name, type, valueList);
+            const response = { msg: `Action with ID: ${id} changed`, status: 200};
+            res.send(response)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     public getActionById = async (req: Request, res: Response): Promise<void> => {
