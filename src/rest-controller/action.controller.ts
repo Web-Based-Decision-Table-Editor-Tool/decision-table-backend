@@ -10,6 +10,7 @@ export class actionController {
 
     public addAction = async (req: Request, res: Response): Promise<void> => {
       try {
+          debugger;
           const { tableId, name , type, valueList } = req.body;
           console.log(tableId, name);
           const id = await this.actionService.addAction(tableId, name, type, valueList);

@@ -14,6 +14,7 @@ export default class actionService{
 
     public async addAction(tableId : string, name : string, type: string, valueList : string[]) {
         
+        debugger;
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
         if(table == null){
