@@ -6,5 +6,5 @@ export interface DecisionTable{
     note: string,
     email: string,
     lastUsedDate: Date,
-    // actions: Action[]
+    actions: Action[]
 }
