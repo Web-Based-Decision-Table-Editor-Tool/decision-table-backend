@@ -29,7 +29,7 @@ export class actionController {
         res.sendStatus(204);
     }
 
-    public deleteActionById = async (req: Request, res: Response): Promise<void> => {
+    public deleteAction = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id, actionId } = req.body;
             let deletedActionId = await this.actionService.deleteAction(id, actionId);
