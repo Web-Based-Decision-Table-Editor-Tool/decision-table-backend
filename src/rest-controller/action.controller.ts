@@ -24,10 +24,10 @@ export class actionController {
         try {
             const { id, actionId, name, type, valueList } = req.body;
             const changedActionId = await this.actionService.changeAction(id, actionId, name, type, valueList);
-            const response = { msg: `Action with ID: ${id} changed`, status: 200};
-            res.send(response)
+            const response = { msg: `Action with ID: ${changedActionId} changed`, status: 200};
+            res.send(response);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
