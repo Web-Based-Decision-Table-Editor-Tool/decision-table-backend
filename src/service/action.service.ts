@@ -51,4 +51,16 @@ export default class actionService{
         return uuid;
     }
 
+
+    public async deleteAction(tableId: string, actionId: string) {
+
+        //Find and load table by ID
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching id exists. You cannot delete action from non-existent tables");
+        }
+
+        
+    }
 }
+

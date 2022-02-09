@@ -29,7 +29,15 @@ export class actionController {
         res.sendStatus(204);
     }
 
-    public deleteAction = async (req: Request, res: Response): Promise<void> => {
+    public deleteActionById = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { id, actionId } = req.body;
+            let deletedActionId = await this.actionService.deleteAction(id, actionId);
+            const response = { msg: `Action with id: ${deletedActionId} deleted`, status: 200};
+            res.send(response)
+        } catch (error) {
+            console.log(error);
+        }
         res.sendStatus(204);
     }
 
