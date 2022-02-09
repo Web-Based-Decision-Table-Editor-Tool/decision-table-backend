@@ -12,3 +12,8 @@ export interface ErrorResponse {
     msg: string;
     status: number;
 }
+
+export interface IConditionResponse {
+    msg: string;
+    status: number;
+}
