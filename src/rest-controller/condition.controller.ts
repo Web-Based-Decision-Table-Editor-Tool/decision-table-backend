@@ -20,14 +20,10 @@ export class conditionController {
             console.log(tableId, name);
 
             // requests service to add condition and get id of added condition
-            const id = await this.conditionService.addCondition(tableId, name, type, valueList);
-            
-            // build response object
-            const response : IConditionResponse = { msg: `condition created with id: ${id}`, status: 200 };
-            const status = response.status;
+            const response = await this.conditionService.addCondition(tableId, name, type, valueList);
 
             // send response
-            res.status(status).json(response);
+            res.status(200).json(response);
         } catch(error){
             // logging caught error
             console.log(error);
@@ -53,7 +49,7 @@ export class conditionController {
         } catch(error){
             // logging caught error
             console.log(error);
-
+            
             // sending error as response and error status
             res.status(404).send(error);
         }
