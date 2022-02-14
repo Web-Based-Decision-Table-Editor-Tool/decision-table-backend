@@ -28,7 +28,8 @@ export default class decisionTableService{
             name,
             note,
             email : "",
-            lastUsedDate : new Date()
+            lastUsedDate : new Date(),
+            actions: []
         }
 
         this.persistence.saveTable(table);
@@ -74,5 +75,13 @@ export default class decisionTableService{
         }
     }
 
+    public async getTableById(id: string): Promise<DecisionTable | null> {
+        try {
+            const dt = await this.persistence.loadTable(id);
+            return dt;
+        } catch (error) {
+            return null;
+        }
+    }
     
 }
