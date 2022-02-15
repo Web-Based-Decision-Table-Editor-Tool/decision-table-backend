@@ -29,7 +29,7 @@ export class conditionController {
             console.log(error);
 
             // sending error as response and error status
-            res.status(500).send(error);
+            res.status(404).send(error);
         }
     }
 
