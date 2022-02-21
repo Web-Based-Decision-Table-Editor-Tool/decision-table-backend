@@ -14,7 +14,7 @@ export default class conditionService{
     
     }
 
-    public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<string>{
+    public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<Condition>{
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -50,7 +50,7 @@ export default class conditionService{
         table.conditions.push(condition);
         this.persistence.saveTable(table);
 
-        return uuid;
+        return condition;
     }
 
     public async getCondition(tableId: string, conditionId: string) : Promise<Condition> {
