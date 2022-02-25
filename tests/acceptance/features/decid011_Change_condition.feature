@@ -34,7 +34,7 @@ And I receive an error code as <con_response_code> and a message <dec_msg> for c
 
 Examples:
 
-| dec_name       | dec_note          | dec_tag | con_name   | con_type   | con_vals                         | new_con_name   | new_con_type   | new_con_vals                         | con_response_code | <dec_msg>             			    	                 |
+| dec_name       | dec_note          | dec_tag | con_name   | con_type   | con_vals                         | new_con_name   | new_con_type   | new_con_vals                         | con_response_code | dec_msg             			    	                 |
 | "RobSab01"     | "NoteRS01"        | "dt_1"  | "Region"   | "text"	 | "Domestic,International"         | "Region"	     |"random"	       |"International"			              | 404 		      | "Inavlid type. Must be one of: boolean, text, numeric"   |
 | "RobSab01"     | "NoteRS01"        | "dt_1"  | "Ship"     | "boolean"  | "Go,No Go"                       | "Ship"         |"boolean"        |"ship, no ship, maybe ship"	          | 200               | "Invalid values for specified type"	 	    	         |
 

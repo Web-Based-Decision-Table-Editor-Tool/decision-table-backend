@@ -140,7 +140,7 @@ export default class conditionService{
         //Save our table back into the file system (overwritting it, so the old condition removed)
         this.persistence.saveTable(table);
 
-        return conditionId;
+        return oldCondition.name;
     }
 
 }

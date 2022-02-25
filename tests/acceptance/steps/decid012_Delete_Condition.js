@@ -8,8 +8,9 @@ const { resetFileStore, shutdown, startServer } = require('./TestUtils');
 chai.use(chaiHttp);
 const host = 'localhost:3000';
 
-var decid011Response;
+var decid012Response;
 var globDec_tag;
+
 
 Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
     globDec_tag = await createDecTable(dec_name, "table description");
@@ -23,19 +24,17 @@ Given('I have created a condition named {string} with type {string} and values {
         .send({ tableId: dec_tag, name: con_name, type: con_type, valueList: con_vals.split(',') });
 });
 
-When('I change the condition {string} with id {string} to condition {string} with type {string} and values {string}', async function (con_name, con_id, new_con_name, new_con_type,new_con_vals) {
-    decid011Response = await chai
+When('I delete the condition {string} with id {string}', async function (con_id) {
+    decid012Response = await chai
         .request(host)
-        .put("/condition")
-        .send({ tableId: globDec_tag, conditionId: con_id, name:new_con_name, type: new_con_type, valueList: new_con_vals.split(',') });
+        .delete("/condition")
+        .send({ tableId: globDec_tag, conditionId: con_id});
 });
 
-Then('I receive the new name matching {string}', function(new_con_name) {
-    expect(decid011Response.body.name).to.equal(new_con_name);
+Then('I receive identifier deleted as tag {string}', function(con_name) {
+    expect(decid012Response.body.name).to.equal(con_name);
 });
 
-Then('And I receive an error code as {int} and a message {string} for condition change', function (con_response_code, dec_msg) {
-    expect(decid011Response.status).to.equal(con_response_code);
-    expect(decid011Response.body.dec_msg).to.equal(dec_msg);
-
+Then('I receive an error code as {string} for condition delete', function (con_response_code) {
+    expect(decid012Response.status).to.equal(con_response_code);
 });
