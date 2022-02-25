@@ -12,17 +12,17 @@ var decid012Response;
 var globDec_tag;
 
 
-Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
-    globDec_tag = await createDecTable(dec_name, "table description");
-    expect(globDec_tag).to.equal(dec_tag);
-});
+// Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
+//     globDec_tag = await createDecTable(dec_name, "table description");
+//     expect(globDec_tag).to.equal(dec_tag);
+// });
 
-Given('I have created a condition named {string} with type {string} and values {string} for this table', async function (dec_tag, con_name, con_type, con_vals) {
-    let returnedCon = await chai
-        .request(host)
-        .post("/condition")
-        .send({ tableId: dec_tag, name: con_name, type: con_type, valueList: con_vals.split(',') });
-});
+// Given('I have created a condition named {string} with type {string} and values {string} for this table', async function (dec_tag, con_name, con_type, con_vals) {
+//     let returnedCon = await chai
+//         .request(host)
+//         .post("/condition")
+//         .send({ tableId: dec_tag, name: con_name, type: con_type, valueList: con_vals.split(',') });
+// });
 
 When('I delete the condition {string} with id {string}', async function (con_id) {
     decid012Response = await chai
