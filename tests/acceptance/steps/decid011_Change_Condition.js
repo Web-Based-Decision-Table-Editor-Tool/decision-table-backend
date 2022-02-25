@@ -1,7 +1,7 @@
 const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
-const { When, Then, Before } = require("@cucumber/cucumber");
+const { Given, When, Then, Before } = require("@cucumber/cucumber");
 const { resetFileStore, shutdown, startServer } = require('./TestUtils');
 
 
