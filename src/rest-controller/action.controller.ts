@@ -33,12 +33,12 @@ export class actionController {
         try {
             const { id, actionName } = req.body;
             let deletedActionId = await this.actionService.deleteAction(id, actionName);
-            const response = { msg: `Action with id: ${deletedActionId} deleted`, status: 200};
+            const response = { id: deletedActionId, msg: `Action with id: ${deletedActionId} deleted`, status: 204};
             res.send(response)
         } catch (error) {
             console.log(error);
         }
-        res.sendStatus(204);
+        //res.sendStatus(204);
     }
 
 }

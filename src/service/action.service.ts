@@ -67,10 +67,12 @@ export default class actionService{
 
             //If you find an action with the given actionId
             if(table.actions[i].name == actionName) {
+                console.log('Within service level delete Action' + table.actions[i].name);
                 //Remove it from the actions array, save table and return actionId
+                let removedActionId = table.actions[i].id;
                 table.actions.splice(i, 1);
                 this.persistence.saveTable(table);
-                return table.actions[i].id;
+                return removedActionId;
             }
          }
 

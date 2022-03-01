@@ -63,21 +63,22 @@ When('I have created an action in {string} named {string} of type numeric', asyn
     decid008Response = await chai.request(host).post('/action').send(reqBody);
 });
 
- When('I delete the action {string}', async function(actionName){
+ When('I delete the action {string} in {string}', async function(actionName, dec_tag){
      let reqBody = {
-         id: "dt_1",
-         tableName: actionName
+         id: dec_tag,
+         actionName: actionName
      };
      decid008Response = await chai.request(host).delete('/action').send(reqBody);
  });
 
 
  Then('I receive identifier for the deleted action', function(){
-     expect(decid008Response.body).to.have.property("id")
- });
+     console.log(decid008Response.body.id); 
+     expect(decid008Response.body.id == true);
+     });
 
- Then('I receive an error code for action delete request as {int}', async function(resp_code){
-     expect(decid008Response).to.have.status(resp_code);
+ Then('I receive an error code for action delete request as {int}', async function(delete_action_response_code){
+     expect(decid008Response.body.status).to.equal(204);
  });
 
 //  Given('decision table with id {string} does not exist', async function (table_id) {
