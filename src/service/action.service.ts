@@ -54,7 +54,7 @@ export default class actionService{
     }
 
 
-    public async deleteAction(tableId: string, actionId: string) {
+    public async deleteAction(tableId: string, actionName: string) {
 
         //Find and load table by ID
         const table = await this.decisionTableService.getTableById(tableId);
@@ -66,16 +66,16 @@ export default class actionService{
         for(let i = 0; i < table.actions.length; i++) {
 
             //If you find an action with the given actionId
-            if(table.actions[i].id == actionId) {
+            if(table.actions[i].name == actionName) {
                 //Remove it from the actions array, save table and return actionId
                 table.actions.splice(i, 1);
                 this.persistence.saveTable(table);
-                return actionId;
+                return table.actions[i].id;
             }
          }
 
          // If this runs, action with that id not found
-         throw("No action exists with id: " + actionId)
+         throw("No action exists with name: " + actionName)
 
     }
 }
