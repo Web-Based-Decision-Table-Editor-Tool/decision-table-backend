@@ -81,13 +81,3 @@ When('I have created an action in {string} named {string} of type numeric', asyn
      expect(decid008Response.body.status).to.equal(204);
  });
 
-//  Given('decision table with id {string} does not exist', async function (table_id) {
-//      // Write code here that turns the phrase above into concrete actions
-//      //query to confirm table with table id does not exist
-//  });
-
-//  Then('I receive an action error code as {int}', function (resp_code) {
-//      // Write code here that turns the phrase above into concrete actions
-//      expect(decid008Response).to.have.status(resp_code);
-//  });
-
