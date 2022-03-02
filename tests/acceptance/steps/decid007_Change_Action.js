@@ -1,7 +1,7 @@
 const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
-const { When, Then, Before } = require("@cucumber/cucumber");
+const { When, Then, Before, Given } = require("@cucumber/cucumber");
 const { resetFileStore, shutdown, startServer } = require('./TestUtils');
 
 
@@ -19,7 +19,7 @@ var decid007Response = null;
  The logic resets the filestore, shutsdown the server and restarts the server. 
  */
  let executeOnce = false;
- Before({tags: "@ChangeActionFeature"}, async function () {
+ Before({tags: "@ChangeActionFeature", timeout: 15 * 2000}, async function () {
      try {
          // Only execute this logic before the first scenario of DeleteDecisionTableFeature
          if(!executeOnce){
@@ -32,4 +32,17 @@ var decid007Response = null;
            console.log(err);
      }
  })
+
+ Given('I have added an action of type {string} named {string} with {string} to decision table with id {string}', async function(old_action_type, old_action_name, old_value_list, dec_tag){
+
+    old_value_list = old_value_list.split(",")
+
+    let reqBody = {
+        name: old_action_name,
+        type: old_action_type,
+        tableId: dec_tag,
+        valueList: old_value_list
+    };
+    decid007Response = await chai.request(host).post('/action').send(reqBody);
+});
 

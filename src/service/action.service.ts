@@ -50,25 +50,26 @@ export default class actionService{
         return uuid;
     }
 
-    public async changeAction(tableId : string, actionId : string, name : string, type: string, valueList : string[]) {
+    public async changeAction(tableId : string, oldActionName : string, newActionName : string, type: string, valueList : string[]) {
         
         //Find table with specified id
         const table = await this.decisionTableService.getTableById(tableId);
+
         if(table == null){
             throw("No table with matching id exists, cannot add actions to non-existent tables");
         }
-
-        //TODO: Use validation function for input
-        debugger;
 
         //Loop through the table actions
         for(let i = 0; i < table.actions.length; i++) {
 
             //If you find an action with the given actionId
-            if(table.actions[i].id == actionId) {
+            if(table.actions[i].name == oldActionName) {
+
+                let updatedActionId = table.actions[i].id;
+
                 //Replace the old attributes of the action with the new attributes if they are not empty
-                if(name) {
-                    table.actions[i].name = name;
+                if(newActionName) {
+                    table.actions[i].name = newActionName;
                 }
 
                 if(type) {
@@ -79,12 +80,13 @@ export default class actionService{
                     table.actions[i].valueList = valueList;
 
                 }
+                
                 this.persistence.saveTable(table);
-                return actionId;
+                return updatedActionId;
             }
          }
 
          // If this runs, action with that id not found
-         throw("No action exists with id: " + actionId)
+         throw("No action exists with name: " + oldActionName);
     }
 }
