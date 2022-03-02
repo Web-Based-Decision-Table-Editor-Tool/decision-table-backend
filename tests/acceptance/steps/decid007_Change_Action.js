@@ -35,7 +35,9 @@ var decid007Response = null;
 
  Given('I have added an action of type {string} named {string} with {string} to decision table with id {string}', async function(old_action_type, old_action_name, old_value_list, dec_tag){
 
-    old_value_list = old_value_list.split(",")
+    //Split into an array of strings if !,! sequence detected,
+    //Else leave it as it is
+    old_value_list = old_value_list.split("!,!")
 
     let reqBody = {
         name: old_action_name,
@@ -46,3 +48,43 @@ var decid007Response = null;
     decid007Response = await chai.request(host).post('/action').send(reqBody);
 });
 
+When('I change the action named {string} to type {string} with {string} in decision table with id {string}', async function(old_action_name, new_action_type, new_value_list, dec_tag){
+
+    //Split into an array of strings if !,! sequence detected,
+    //Else leave it as it is
+    new_value_list = new_value_list.split("!,!")
+
+    let reqBody = {
+        tableId: dec_tag,
+        oldActionName: old_action_name,
+        newActionName: "",
+        type: new_action_type,
+        valueList: new_value_list
+    };
+    decid007Response = await chai.request(host).put('/action').send(reqBody);
+});
+
+When('I change an action of name {string} to name {string} in decision table with id {string}', async function(old_action_name, new_action_name, dec_tag){
+
+
+    let reqBody = {
+        tableId: dec_tag,
+        oldActionName: old_action_name,
+        newActionName: new_action_name,
+        type: "",
+        valueList: ""
+    };
+    decid007Response = await chai.request(host).put('/action').send(reqBody);
+});
+
+Then('I receive new name matching {string}', async function(new_action_name){
+    expect(decid007Response.body.actionName).to.equal(new_action_name)
+});
+
+Then('I recieve new type matching {string}', async function(new_action_type){
+    expect(decid007Response.body.actionType).to.equal(new_action_type)
+});
+
+Then('I receive a success code {int}', async function(action_response_code){
+    expect(decid007Response.body.status).to.equal(action_response_code)
+});

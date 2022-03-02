@@ -80,9 +80,9 @@ export default class actionService{
                     table.actions[i].valueList = valueList;
 
                 }
-                
+
                 this.persistence.saveTable(table);
-                return updatedActionId;
+                return table.actions[i];
             }
          }
 

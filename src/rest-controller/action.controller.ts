@@ -23,8 +23,8 @@ export class actionController {
     public updateActionById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { tableId, oldActionName, newActionName, type, valueList } = req.body;
-            const changedActionId = await this.actionService.changeAction(tableId, oldActionName, newActionName, type, valueList);
-            const response = { msg: `Action with ID: ${changedActionId} changed`, status: 200};
+            const changedAction = await this.actionService.changeAction(tableId, oldActionName, newActionName, type, valueList);
+            const response = { msg: `Action with ID: ${changedAction.id} changed`, status: 200, actionId: changedAction.id, actionName: changedAction.name, valueList: changedAction.valueList, actionType: changedAction.type};
             res.send(response);
         } catch (error) {
             console.log(error);
