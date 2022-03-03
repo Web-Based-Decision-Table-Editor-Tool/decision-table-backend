@@ -62,14 +62,10 @@ export class conditionController {
             const { tableId, conditionId, name, type, valueList } = req.body;
 
             // requests service to add update and get id of updated condition
-            const id = await this.conditionService.updateCondition(tableId, conditionId, name, type, valueList);
-            
-            // build response object
-            const response : IConditionResponse = { msg: `condition updated with id: ${id}`, status: 200 };
-            const status = response.status;
+            const response : Condition = await this.conditionService.updateCondition(tableId, conditionId, name, type, valueList);
 
             // send response
-            res.status(status).json(response);
+            res.status(200).json(response);
         } catch(error){
             // logging caught error
             console.log(error);
@@ -85,14 +81,10 @@ export class conditionController {
             const { tableId, conditionId } = req.body;
 
             // requests service to add update and get id of updated condition
-            const id = await this.conditionService.deleteCondition(tableId, conditionId);
-            
-            // build response object
-            const response : IConditionResponse = { msg: `condition deleted with id: ${id}`, status: 200 };
-            const status = response.status;
+            const response : Condition = await this.conditionService.deleteCondition(tableId, conditionId);
 
             // send response
-            res.status(status).json(response);
+            res.status(200).json(response);
         } catch(error){
             // logging caught error
             console.log(error);

@@ -23,7 +23,7 @@ Given('I have created a condition named {string} with type {string} and values {
         .post("/condition")
         .send({ tableId: globDec_tag, name: con_name, type: con_type, valueList: con_vals.split(',') });
 });
-//When I change the condition <con_name> with id <con_id> to condition <new_con_name> with type <new_con_type> and values <new_con_vals> 
+
 When('I change the condition {string} with id {string} to condition {string} with type {string} and values {string}', async function (con_name, con_id, new_con_name, new_con_type,new_con_vals) {
     decid011Response = await chai
         .request(host)
@@ -32,12 +32,10 @@ When('I change the condition {string} with id {string} to condition {string} wit
 });
 
 Then('I receive the new name matching {string} for condition change', function(new_con_name) {
-    console.log("RETURN VALUE" + decid011Response.body.msg)
-    //expect(decid011Response.body.name).to.equal(new_con_name);
+    console.log("RETURN VALUE " + JSON.stringify(decid011Response.body))
+    expect(decid011Response.body.name).to.equal(new_con_name);
 });
 
 Then('I receive an error code as {int} for condition change', function (con_response_code) {
     expect(decid011Response.status).to.equal(con_response_code);
-    //expect(decid011Response.body.dec_msg).to.equal(dec_msg);
-
 });

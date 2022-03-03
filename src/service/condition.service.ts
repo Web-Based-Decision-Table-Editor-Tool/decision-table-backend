@@ -78,7 +78,7 @@ export default class conditionService{
     }
 
 
-    public async updateCondition(tableId : string, conditionId: string, name : string, type: string, valueList : string[]) : Promise<string>{
+    public async updateCondition(tableId : string, conditionId: string, name : string, type: string, valueList : string[]) : Promise<Condition>{
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -119,10 +119,10 @@ export default class conditionService{
         table.conditions.push(newCondition);
         this.persistence.saveTable(table);
 
-        return uuid;
+        return newCondition;
     }
 
-    public async deleteCondition(tableId : string, conditionId: string) : Promise<string>{
+    public async deleteCondition(tableId : string, conditionId: string) : Promise<Condition>{
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -140,7 +140,7 @@ export default class conditionService{
         //Save our table back into the file system (overwritting it, so the old condition removed)
         this.persistence.saveTable(table);
 
-        return oldCondition.name;
+        return oldCondition;
     }
 
 }

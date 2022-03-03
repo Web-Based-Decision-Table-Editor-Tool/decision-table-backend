@@ -30,8 +30,7 @@ Given I am connected to the Decision_Table_Editor_Cloud_Services
 And I have created decision table named <dec_name> identified as <dec_tag>
 And I have created a condition named <con_name> with type <con_type> and values <con_vals> for this table
 When I change the condition <con_name> with id <con_id> to condition <new_con_name> with type <new_con_type> and values <new_con_vals> 
-Then I receive the new name matching <new_con_name> for condition change
-And I receive an error code as <con_response_code> for condition change
+Then I receive an error code as <con_response_code> for condition change
 
 Examples:
 
