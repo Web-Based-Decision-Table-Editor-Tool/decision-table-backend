@@ -32,7 +32,6 @@ When('I change the condition {string} with id {string} to condition {string} wit
 });
 
 Then('I receive the new name matching {string} for condition change', function(new_con_name) {
-    console.log("RETURN VALUE " + JSON.stringify(decid011Response.body))
     expect(decid011Response.body.name).to.equal(new_con_name);
 });
 
