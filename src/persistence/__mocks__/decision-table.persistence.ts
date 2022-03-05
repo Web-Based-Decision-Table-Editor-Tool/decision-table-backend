@@ -7,7 +7,7 @@ const mock = jest.fn().mockImplementation(() => (
         return 0;
       },
       async saveTable(table: DecisionTable){
-        
+        // empty implementation
       }
     }
   )
