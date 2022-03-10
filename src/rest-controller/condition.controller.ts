@@ -16,9 +16,6 @@ export class conditionController {
             // parsing request body attributes
             const { tableId, name, type, valueList } = req.body;
 
-            // logging info
-            console.log(tableId, name);
-
             // requests service to add condition and get id of added condition
             const response = await this.conditionService.addCondition(tableId, name, type, valueList);
 

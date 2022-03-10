@@ -53,7 +53,7 @@ export class actionController {
         } catch (error) {
             console.log(error);
         }
-        //res.sendStatus(204);
+
     }
 
 }

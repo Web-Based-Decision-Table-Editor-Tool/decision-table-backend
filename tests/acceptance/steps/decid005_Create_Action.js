@@ -48,7 +48,7 @@ Then('I receive an identifier for the action', function(){
     expect(decid005Response.body).to.have.property("id")
 });
 
-Then('I receive a success code {int}', async function(resp_code){
+Then('I receive a success code {int} for create action', async function(resp_code){
     expect(decid005Response).to.have.status(resp_code);
 });
 

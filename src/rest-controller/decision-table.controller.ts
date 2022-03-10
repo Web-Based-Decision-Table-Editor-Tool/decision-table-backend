@@ -9,7 +9,6 @@ export class decisionTableController {
     constructor(private service : decisionTableService) {
     }
 
-
     public changeTableNameById = async (req: Request, res: Response): Promise<void> => {
         try {
             const id = req.body.id;

@@ -21,7 +21,7 @@ Given I am connected to the Decision_Table_Editor_Cloud_Services
 And I have created decision table named <dec_name> identified as <dec_tag>
 When I add an action of type <type> named <action_name> to decision table with id <dec_tag> with action values: <value1> and <value2>
 Then I receive an identifier for the action
-And I receive a success code <action_response_code>
+And I receive a success code <action_response_code> for create action
 
 Examples:
 | dec_name   | dec_tag |  type    | action_name   | value1   | value2    | action_response_code |

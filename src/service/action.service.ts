@@ -31,9 +31,6 @@ export default class actionService{
         if(type.toLowerCase() === 'boolean' && valueList.length != 2){
             throw("Invalid values for specified type");
         }
-
-        console.log(table);
-        debugger;
         //TODO: add validation for numeric type
 
 
@@ -108,7 +105,6 @@ export default class actionService{
 
             //If you find an action with the given actionId
             if(table.actions[i].name == actionName) {
-                console.log('Within service level delete Action' + table.actions[i].name);
                 //Remove it from the actions array, save table and return actionId
                 let removedActionId = table.actions[i].id;
                 table.actions.splice(i, 1);

@@ -24,7 +24,7 @@
  And I change an action of name <old_action_name> to name <new_action_name> in decision table with id <dec_tag> 
  Then I receive new name matching <new_action_name>
  And I recieve new type matching <new_action_type>
- And I receive a success code <action_response_code>
+ And I receive a success code <action_response_code> for change action
 
  Examples:
  | dec_name   | dec_tag |  old_action_type |  old_value_list    | old_action_name    | new_action_type   | new_value_list | new_action_name    |  action_response_code | Comment                       |

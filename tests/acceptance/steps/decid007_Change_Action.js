@@ -85,6 +85,6 @@ Then('I recieve new type matching {string}', async function(new_action_type){
     expect(decid007Response.body.actionType).to.equal(new_action_type)
 });
 
-Then('I receive a success code {int}', async function(action_response_code){
+Then('I receive a success code {int} for change action', async function(action_response_code){
     expect(decid007Response.body.status).to.equal(action_response_code)
 });

@@ -73,11 +73,10 @@ When('I have created an action in {string} named {string} of type numeric', asyn
 
 
  Then('I receive identifier for the deleted action', function(){
-     console.log(decid008Response.body.id); 
      expect(decid008Response.body.id == true);
-     });
+});
 
  Then('I receive an error code for action delete request as {int}', async function(delete_action_response_code){
-     expect(decid008Response.body.status).to.equal(204);
+     expect(decid008Response.body.status).to.equal(delete_action_response_code);
  });
 
