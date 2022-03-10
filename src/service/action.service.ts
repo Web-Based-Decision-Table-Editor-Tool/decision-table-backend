@@ -54,6 +54,47 @@ export default class actionService{
         return uuid;
     }
 
+    public async changeAction(tableId : string, oldActionName : string, newActionName : string, type: string, valueList : string[]) {
+        
+        //Find table with specified id
+        const table = await this.decisionTableService.getTableById(tableId);
+
+        if(table == null){
+            throw("No table with matching id exists, cannot add actions to non-existent tables");
+        }
+
+        //Loop through the table actions
+        for(let i = 0; i < table.actions.length; i++) {
+
+            //If you find an action with the given actionId
+            if(table.actions[i].name == oldActionName) {
+
+                let updatedActionId = table.actions[i].id;
+
+                //Replace the old attributes of the action with the new attributes if they are not empty
+                if(newActionName) {
+                    table.actions[i].name = newActionName;
+                }
+
+                if(type) {
+                    table.actions[i].type = type;
+                }
+
+                if(valueList.length != 0) {
+                    table.actions[i].valueList = valueList;
+
+                }
+
+                this.persistence.saveTable(table);
+                return table.actions[i];
+              
+            }
+         }
+
+         // If this runs, action with that id not found
+         throw("No action exists with name: " + oldActionName);
+    }
+  
     public async deleteAction(tableId: string, actionName: string) {
 
         //Find and load table by ID
@@ -80,7 +121,7 @@ export default class actionService{
          throw("No action exists with name: " + actionName)
 
     }
-
+  
     public async getActionById(actionId: any, tableId: any): Promise<Action> {
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -95,6 +136,6 @@ export default class actionService{
         }
         throw(`Unable to find action with id ${actionId} in table ${tableId}`);
     }
-
+  
 }
 
