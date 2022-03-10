@@ -25,7 +25,7 @@ decisionTableRouter.get("/:id", decisionTable.getTableNameById);
 actionRouter.post("/", action.addAction);
 actionRouter.get("/:id", action.getActionById);
 actionRouter.delete("/:id", action.deleteAction);
-actionRouter.put("/:id", action.updateActionById);
+actionRouter.put("/", action.updateActionById);
 
 // condition endpoints
 conditionRouter.post("/", condition.addCondition);

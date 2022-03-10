@@ -1,9 +1,10 @@
 const { startServer, resetFileStore } = require('./TestUtils')
 const chai = require("chai");
 const expect = require("chai").expect;
-const { Given, Then, BeforeAll, AfterAll, Before } = require("@cucumber/cucumber");
+const { Given, Then, BeforeAll, AfterAll, Before, setDefaultTimeout } = require("@cucumber/cucumber");
 const { createDecTable } = require('./TestUtils');
 
+setDefaultTimeout(60 * 1000);
 
 const host = 'localhost:3000'
 // start the server

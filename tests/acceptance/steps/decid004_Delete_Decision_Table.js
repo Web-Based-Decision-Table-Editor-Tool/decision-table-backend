@@ -19,7 +19,7 @@ var decid004Response = null;
  The logic resets the filestore, shutsdown the server and restarts the server. 
  */
  let executeOnce = false;
- Before({tags: "@DeleteDecisionTableFeature"}, async function () {
+ Before({tags: "@DeleteDecisionTableFeature", timeout: 15 * 2000}, async function () {
      try {
          // Only execute this logic before the first scenario of DeleteDecisionTableFeature
          if(!executeOnce){
