@@ -57,13 +57,41 @@ export class conditionController {
     }
 
     public updateConditionById = async (req: Request, res: Response): Promise<void> => {
-        // TODO: decid011
-        res.sendStatus(204);
+        try{
+            // parsing request body attributes
+            const { tableId, conditionId, name, type, valueList } = req.body;
+
+            // requests service to add update and get id of updated condition
+            const response : Condition = await this.conditionService.updateCondition(tableId, conditionId, name, type, valueList);
+
+            // send response
+            res.status(200).json(response);
+        } catch(error){
+            // logging caught error
+            console.log(error);
+
+            // sending error as response and error status
+            res.status(500).send(error);
+        }
     }
 
     public deleteCondition = async (req: Request, res: Response): Promise<void> => {
-        // TODO: decid012
-        res.sendStatus(204);
+        try{
+            // parsing request body attributes
+            const { tableId, conditionId } = req.body;
+
+            // requests service to add update and get id of updated condition
+            const response : Condition = await this.conditionService.deleteCondition(tableId, conditionId);
+
+            // send response
+            res.status(200).json(response);
+        } catch(error){
+            // logging caught error
+            console.log(error);
+
+            // sending error as response and error status
+            res.status(500).send(error);
+        }
     }
 
 }
