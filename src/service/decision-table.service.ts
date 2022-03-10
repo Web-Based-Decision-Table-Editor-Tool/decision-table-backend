@@ -69,6 +69,7 @@ export default class decisionTableService{
 
     public async getTableNameById(id: string): Promise<ITableNameResponse> {
         try {
+
             const name = await this.persistence.getTableNameById(id);
             return {name, status: 200}
         } catch (error) {
@@ -78,6 +79,7 @@ export default class decisionTableService{
 
     public async getTableById(id: string): Promise<DecisionTable | null> {
         try {
+            debugger;
             const dt = await this.persistence.loadTable(id);
             return dt;
         } catch (error) {

@@ -31,6 +31,9 @@ export default class actionService{
         if(type.toLowerCase() === 'boolean' && valueList.length != 2){
             throw("Invalid values for specified type");
         }
+
+        console.log(table);
+        debugger;
         //TODO: add validation for numeric type
 
 
@@ -51,6 +54,33 @@ export default class actionService{
         return uuid;
     }
 
+    public async deleteAction(tableId: string, actionName: string) {
+
+        //Find and load table by ID
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching id exists. You cannot delete action from non-existent tables");
+        }
+
+        //Loop through the table actions
+        for(let i = 0; i < table.actions.length; i++) {
+
+            //If you find an action with the given actionId
+            if(table.actions[i].name == actionName) {
+                console.log('Within service level delete Action' + table.actions[i].name);
+                //Remove it from the actions array, save table and return actionId
+                let removedActionId = table.actions[i].id;
+                table.actions.splice(i, 1);
+                this.persistence.saveTable(table);
+                return removedActionId;
+            }
+         }
+
+         // If this runs, action with that id not found
+         throw("No action exists with name: " + actionName)
+
+    }
+
     public async getActionById(actionId: any, tableId: any): Promise<Action> {
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -67,3 +97,4 @@ export default class actionService{
     }
 
 }
+

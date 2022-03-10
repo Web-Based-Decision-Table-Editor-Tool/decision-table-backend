@@ -11,6 +11,7 @@ export class actionController {
 
     public addAction = async (req: Request, res: Response): Promise<void> => {
       try {
+          debugger;
           const { tableId, name , type, valueList } = req.body;
           const id = await this.actionService.addAction(tableId, name, type, valueList);
           const response = { id: id, msg: `action created with id: ${id}`, status: 201};
@@ -37,7 +38,15 @@ export class actionController {
     }
 
     public deleteAction = async (req: Request, res: Response): Promise<void> => {
-        res.sendStatus(204);
+        try {
+            const { id, actionName } = req.body;
+            let deletedActionId = await this.actionService.deleteAction(id, actionName);
+            const response = { id: deletedActionId, msg: `Action with id: ${deletedActionId} deleted`, status: 204};
+            res.send(response)
+        } catch (error) {
+            console.log(error);
+        }
+        //res.sendStatus(204);
     }
 
 }
