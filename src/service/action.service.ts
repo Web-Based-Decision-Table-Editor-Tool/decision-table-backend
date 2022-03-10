@@ -8,7 +8,8 @@ import { Action } from '../types/action';
 @Service()
 export default class actionService{
    
-    constructor(private decisionTableService: decisionTableService, private persistence: decisionTablePersistence){
+    constructor(private decisionTableService: decisionTableService, 
+                private persistence: decisionTablePersistence){
     
     }
 
@@ -23,13 +24,16 @@ export default class actionService{
         
         const actionType = type.toLowerCase();
         if(!(actionType === 'boolean' || actionType ==='text' ||actionType === 'numeric')){
-            throw("Inavlid type. Must be one of: boolean, text, numeric");
+            throw("Invalid type. Must be one of: boolean, text, numeric");
         }
 
         //type boolean can have 2 values only
         if(type.toLowerCase() === 'boolean' && valueList.length != 2){
             throw("Invalid values for specified type");
         }
+
+        console.log(table);
+        debugger;
         //TODO: add validation for numeric type
 
 
@@ -83,10 +87,55 @@ export default class actionService{
 
                 this.persistence.saveTable(table);
                 return table.actions[i];
+              
             }
          }
 
          // If this runs, action with that id not found
          throw("No action exists with name: " + oldActionName);
     }
+  
+    public async deleteAction(tableId: string, actionName: string) {
+
+        //Find and load table by ID
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching id exists. You cannot delete action from non-existent tables");
+        }
+
+        //Loop through the table actions
+        for(let i = 0; i < table.actions.length; i++) {
+
+            //If you find an action with the given actionId
+            if(table.actions[i].name == actionName) {
+                console.log('Within service level delete Action' + table.actions[i].name);
+                //Remove it from the actions array, save table and return actionId
+                let removedActionId = table.actions[i].id;
+                table.actions.splice(i, 1);
+                this.persistence.saveTable(table);
+                return removedActionId;
+            }
+         }
+
+         // If this runs, action with that id not found
+         throw("No action exists with name: " + actionName)
+
+    }
+  
+    public async getActionById(actionId: any, tableId: any): Promise<Action> {
+        //find table with id
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching Id exists, querying action failed");
+        }
+        for (let index = 0; index < table.actions.length; index++) {
+            const action = table.actions[index];
+            if(action.id === actionId){
+                return action;
+            }
+        }
+        throw(`Unable to find action with id ${actionId} in table ${tableId}`);
+    }
+  
 }
+
