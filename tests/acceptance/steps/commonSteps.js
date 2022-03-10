@@ -18,6 +18,7 @@ BeforeAll({timeout: 15 * 2000}, async function (){
 
 AfterAll({timeout: 15 * 2000}, async function(){
     try {
+        await resetFileStore();
     } catch (err) {
         console.log(err);
     }

@@ -6,8 +6,10 @@ import { Action } from '../types/action';
 
 
 @Service()
-export default class actionService{   
-    constructor(private decisionTableService: decisionTableService, private persistence: decisionTablePersistence){
+export default class actionService{
+   
+    constructor(private decisionTableService: decisionTableService, 
+                private persistence: decisionTablePersistence){
     
     }
 

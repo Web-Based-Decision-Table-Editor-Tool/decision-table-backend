@@ -1,4 +1,5 @@
 import { Action } from "./action";
+import { Condition } from "./condition";
 
 export interface DecisionTable{
     id: string,
@@ -7,4 +8,5 @@ export interface DecisionTable{
     email: string,
     lastUsedDate: Date,
     actions: Action[]
+    conditions: Condition[]
 }

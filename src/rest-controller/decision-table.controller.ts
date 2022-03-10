@@ -19,7 +19,6 @@ export class decisionTableController {
             const status = response.status;
             const name = response.name;
             res.status(status).json({ name, status});
-
         } catch {
             res.status(500);
         }
