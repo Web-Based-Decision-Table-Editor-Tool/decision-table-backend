@@ -29,7 +29,8 @@ export default class decisionTableService{
             note,
             email : "",
             lastUsedDate : new Date(),
-            actions: []
+            actions: [],
+            conditions: []
         }
 
         this.persistence.saveTable(table);

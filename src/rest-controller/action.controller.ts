@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import { Request, Response } from "express";
 import actionService from '../service/action.service';
 import { ErrorResponse } from '../types/interfaces';
+import { Action } from '../types/action';
 
 @Service()
 export class actionController {
@@ -12,11 +13,12 @@ export class actionController {
       try {
           debugger;
           const { tableId, name , type, valueList } = req.body;
-          console.log(tableId, name);
           const id = await this.actionService.addAction(tableId, name, type, valueList);
-          const response = { msg: `action created with id: ${id}`, status: 200};
-          res.send(response)
+          const response = { id: id, msg: `action created with id: ${id}`, status: 201};
+          res.status(201).json(response);
       } catch (error) {
+          const errorResponse = { msg: error, status: 400}
+          res.status(400).json(errorResponse);
           console.log(error);
       }
     }
@@ -26,7 +28,13 @@ export class actionController {
     }
 
     public getActionById = async (req: Request, res: Response): Promise<void> => {
-        res.sendStatus(204);
+        try{
+            const {tableId, actionId} = req.body;
+            const action: Action = await this.actionService.getActionById(actionId, tableId);
+            res.status(200).json(action)
+        } catch (error){
+            res.status(404).json({msg: error})
+        }
     }
 
     public deleteAction = async (req: Request, res: Response): Promise<void> => {

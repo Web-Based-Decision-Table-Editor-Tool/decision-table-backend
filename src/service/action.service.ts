@@ -8,7 +8,8 @@ import { Action } from '../types/action';
 @Service()
 export default class actionService{
    
-    constructor(private decisionTableService: decisionTableService, private persistence: decisionTablePersistence){
+    constructor(private decisionTableService: decisionTableService, 
+                private persistence: decisionTablePersistence){
     
     }
 
@@ -23,7 +24,7 @@ export default class actionService{
         
         const actionType = type.toLowerCase();
         if(!(actionType === 'boolean' || actionType ==='text' ||actionType === 'numeric')){
-            throw("Inavlid type. Must be one of: boolean, text, numeric");
+            throw("Invalid type. Must be one of: boolean, text, numeric");
         }
 
         //type boolean can have 2 values only
@@ -53,7 +54,6 @@ export default class actionService{
         return uuid;
     }
 
-
     public async deleteAction(tableId: string, actionName: string) {
 
         //Find and load table by ID
@@ -80,5 +80,21 @@ export default class actionService{
          throw("No action exists with name: " + actionName)
 
     }
+
+    public async getActionById(actionId: any, tableId: any): Promise<Action> {
+        //find table with id
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching Id exists, querying action failed");
+        }
+        for (let index = 0; index < table.actions.length; index++) {
+            const action = table.actions[index];
+            if(action.id === actionId){
+                return action;
+            }
+        }
+        throw(`Unable to find action with id ${actionId} in table ${tableId}`);
+    }
+
 }
 
