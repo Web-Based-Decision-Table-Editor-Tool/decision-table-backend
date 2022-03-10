@@ -24,7 +24,7 @@ export default class actionService{
         
         const actionType = type.toLowerCase();
         if(!(actionType === 'boolean' || actionType ==='text' ||actionType === 'numeric')){
-            throw("Inavlid type. Must be one of: boolean, text, numeric");
+            throw("Invalid type. Must be one of: boolean, text, numeric");
         }
 
         //type boolean can have 2 values only
@@ -49,6 +49,21 @@ export default class actionService{
         this.persistence.saveTable(table);
 
         return uuid;
+    }
+
+    public async getActionById(actionId: any, tableId: any): Promise<Action> {
+        //find table with id
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching Id exists, querying action failed");
+        }
+        for (let index = 0; index < table.actions.length; index++) {
+            const action = table.actions[index];
+            if(action.id === actionId){
+                return action;
+            }
+        }
+        throw(`Unable to find action with id ${actionId} in table ${tableId}`);
     }
 
 }
