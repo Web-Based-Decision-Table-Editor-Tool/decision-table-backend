@@ -9,7 +9,14 @@ export class ruleController {
 
     public addRule = async (req: Request, res: Response): Promise<void> => {
         const { tableId, conditions, actions } = req.body;
-        console.log(tableId, conditions, actions);
+        try {
+            const rule = await this.ruleService.addRule(tableId, conditions, actions);
+            res.status(201).json(rule);
+            res.send();
+        } catch (error) {
+            console.log(error)
+            res.status(400).send();
+        }
     }
 
 }

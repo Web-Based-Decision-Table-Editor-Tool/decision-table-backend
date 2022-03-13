@@ -30,7 +30,8 @@ export default class decisionTableService{
             email : "",
             lastUsedDate : new Date(),
             actions: [],
-            conditions: []
+            conditions: [],
+            rules: []
         }
 
         this.persistence.saveTable(table);
