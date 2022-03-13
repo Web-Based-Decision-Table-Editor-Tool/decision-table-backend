@@ -30,6 +30,8 @@ export class actionController {
             const response = { msg: `Action with ID: ${changedAction.id} changed`, status: 200, actionId: changedAction.id, actionName: changedAction.name, valueList: changedAction.valueList, actionType: changedAction.type};
             res.send(response);
         } catch (error) {
+            const errorResponse = { msg: error, status: 400}
+            res.status(400).json(errorResponse);
             console.log(error);
         }
     }
