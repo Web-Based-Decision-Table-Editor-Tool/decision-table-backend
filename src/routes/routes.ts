@@ -38,6 +38,10 @@ conditionRouter.put("/", condition.updateConditionById);
 
 // rule endpoints
 ruleRouter.post("/", rule.addRule);
+ruleRouter.get("/", rule.getRuleById);
+ruleRouter.delete("/", rule.deleteRuleById);
+
+
 
 // router assignments
 defaultRouter.use("/table", decisionTableRouter);

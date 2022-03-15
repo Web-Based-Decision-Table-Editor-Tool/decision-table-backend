@@ -19,12 +19,54 @@ export default class ruleService{
     
     }
 
+    public async getRuleById(tableId: string, ruleId: string) {
+        const table = await this.decisionTableService.getTableById(tableId);
+
+        if(table == null){
+            throw("No table with matching Id exists, adding condition failed");
+        }
+
+        for (let index = 0; index < table.rules.length; index++) {
+            const rule = table.rules[index];
+            if(rule.id === ruleId) {
+                return rule;
+            }
+           
+        }
+        
+        throw(`Unable to find action with id ${ruleId} in table ${tableId}`);
+    }
+
+    public async deleteRuleById(tableId: string, ruleId: string) {
+        const table = await this.decisionTableService.getTableById(tableId);
+
+        if(table == null){
+            throw("No table with matching Id exists, adding condition failed");
+        }
+
+        for (let index = 0; index < table.rules.length; index++) {
+            const rule = table.rules[index];
+            if(rule.id === ruleId) {
+                let removedRuleId = table.rules[index].id;
+                table.rules.splice(index, 1);
+                this.persistence.saveTable(table);
+                return removedRuleId;
+            }
+           
+        }
+        
+        throw(`Unable to find action with id ${ruleId} in table ${tableId}`);
+    }
+
+    
+
     public async addRule(tableId : string, conditions: RuleApiInput[], actions: RuleApiInput[]) : Promise<Rule>{
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
+        console.log(table + "bro its not working")
         if(table == null){
-            throw("No table with matching Id exists, adding condition failed");
+            throw("No table with matching Id exists, adding rule failed");
         }
 
         if(actions.length == 0 || conditions.length == 0){
