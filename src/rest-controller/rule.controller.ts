@@ -19,4 +19,29 @@ export class ruleController {
         }
     }
 
+    public getRuleById = async (req: Request, res: Response): Promise<void> => {
+        const { tableId, ruleId } = req.body;
+        try {
+            const rule = await this.ruleService.getRuleById(tableId, ruleId);
+            const response = {msg: `Rule with ID: ${rule.id} changed`, status: 200, rule:rule};
+            res.send(response);
+        } catch (error) {
+            console.log(error)
+            res.status(400).send();
+        }
+    }
+
+    public deleteRuleById = async (req: Request, res: Response): Promise<void> => {
+        const { tableId, ruleId } = req.body;
+        try {
+            const removedRuleId = await this.ruleService.deleteRuleById(tableId, ruleId);
+            const response = {msg: `Rule with ID: ${removedRuleId} deleted`, status: 200};
+            res.send(response);
+        } catch (error) {
+            console.log(error)
+            res.status(400).send();
+        }
+    }
+
+
 }
