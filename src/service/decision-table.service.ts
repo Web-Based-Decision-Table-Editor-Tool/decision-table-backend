@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { ITableResponse, ITableNameResponse, ErrorResponse } from "../types/interfaces";
+import { ITableResponse, ITableNameResponse, ErrorResponse, ITableNoteResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
 
@@ -64,6 +64,15 @@ export default class decisionTableService{
             return { name, status: 201}
         } catch (error) {
             return { name: "", status: 400}
+        }
+    }
+
+    public async changeTableNote(id: string, newNote: string): Promise<ITableNoteResponse> {
+        try {
+            const note = await this.persistence.changeTableNoteById(id, newNote);
+            return { note, status: 201}
+        } catch (error) {
+            return { note: "", status: 400}
         }
     }
 
