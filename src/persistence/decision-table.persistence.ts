@@ -115,5 +115,15 @@ export default class decisionTablePersistence{
 
     }
 
+    public async getTableNoteById(id: string): Promise<string> {
+        const dt : DecisionTable | null = this.loadTable(id);
+        if(dt == null) {
+            throw("No such table with matching ID exists. No changes made.")
+        } else {
+            return dt.note;
+        }
+
+    }
+
     
 }

@@ -21,6 +21,7 @@ decisionTableRouter.delete("/:id", decisionTable.deleteTable);
 decisionTableRouter.put("/", decisionTable.changeTableNameById);
 decisionTableRouter.put("/note", decisionTable.changeTableNoteById);
 decisionTableRouter.get("/:id", decisionTable.getTableNameById);
+decisionTableRouter.get("/note/:id", decisionTable.getTableNoteById);
 
 // action endpoints
 actionRouter.post("/", action.addAction);

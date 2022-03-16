@@ -86,6 +86,15 @@ export default class decisionTableService{
         }
     }
 
+    public async getTableNoteById(id: string): Promise<ITableNoteResponse> {
+        try {
+            const note = await this.persistence.getTableNoteById(id);
+            return {note, status: 200}
+        } catch (error) {
+            return { note: "", status: 404}
+        }
+    }
+
     public async getTableById(id: string): Promise<DecisionTable | null> {
         try {
             debugger;

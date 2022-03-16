@@ -70,5 +70,12 @@ export class decisionTableController {
         const { name, status } = response;
         res.status(status).json({ name, status });
     }
+
+    public getTableNoteById = async (req: Request, res: Response): Promise<void> => {
+        const tableId = req.params.id;
+        const response : ITableNoteResponse = await this.service.getTableNoteById(tableId);
+        const { note, status } = response;
+        res.status(status).json({ note, status });
+    }
   
 }
