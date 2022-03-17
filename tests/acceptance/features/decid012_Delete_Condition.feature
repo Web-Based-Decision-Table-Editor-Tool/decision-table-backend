@@ -1,4 +1,3 @@
-@ChangeDecisionTableNameFeature
 Feature: Delete Condition Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -15,7 +14,7 @@ Acceptance Tests
 Scenario Outline: Change a condition (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag> for condition delete
+And I have created decision table named <dec_name> for delete condition
 And I have created a condition named <con_name> with type <con_type> and values <con_vals> for this table for condition delete
 When I delete the condition <con_name> with id <con_id>
 Then I receive identifier deleted as tag <con_name> for condition delete
@@ -31,7 +30,7 @@ Examples:
 Scenario Outline: Change a condition (Error Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
+And I have created decision table named <dec_name> for delete condition
 And I have created a condition named <con_name> with type <con_type> and values <con_vals> for this table
 When I delete the condition <con_name> with id <con_id>
 And I receive an error code as <con_response_code> for condition delete

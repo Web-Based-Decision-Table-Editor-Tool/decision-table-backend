@@ -1,44 +1,32 @@
 const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
-const { When, Then, Before } = require("@cucumber/cucumber");
-const { resetFileStore, shutdown, startServer } = require('./TestUtils');
+const { Given, When, Then, Before } = require("@cucumber/cucumber");
+const { createDecTable } = require('./TestUtils');
 
 chai.use(chaiHttp);
 const host = 'localhost:3000';
 
 var decid009Response;
+var tableId;
 
-/*
- Background: 
- 'Before' normally executes before every scenario of every feature file
- Therefore, tags is added so that 'Before' is only executed for the features identified in tags
+Given("I have created decision table named {string} for creating condition", async function(dec_name){
+    tableId = await createDecTable(dec_name, "table description");
+});
 
- Behaviour: 
- The logic resets the filestore, shutsdown the server and restarts the server. 
- */
- let executeOnce = false;
-Before({tags: "@CreateConditionFeature"}, async function () {
-    try {
-        // Only execute this logic before the first scenario
-        if(!executeOnce){
-            await resetFileStore();
-            await shutdown();
-            await startServer();
-            executeOnce = true;
-        }
-    } catch (err) {
-        console.log(err);
-    }
-})
-
-When('I create a condition in table identified as {string} named {string} with type {string} and values {string}', async function (dec_tag, con_name, con_type, con_vals) {
+When('I create a condition in table named {string} with type {string} and values {string}', async function (con_name, con_type, con_vals) {
     decid009Response = await chai
         .request(host)
         .post("/condition")
-        .send({ tableId: dec_tag, name: con_name, type: con_type, valueList: con_vals.split(',') });
+        .send({ tableId: tableId, name: con_name, type: con_type, valueList: con_vals.split(',') });
 });
 
+When('I create a condition in table with invalid id named {string} with type {string} and values {string}', async function (con_name, con_type, con_vals) {
+    decid009Response = await chai
+        .request(host)
+        .post("/condition")
+        .send({ tableId: "Invalid", name: con_name, type: con_type, valueList: con_vals.split(',') });
+});
 Then('a condition with a non-null id is created', function () {
     expect(decid009Response.body.id).to.not.equal(null);
     expect(decid009Response.body.id).to.not.equal(undefined);
