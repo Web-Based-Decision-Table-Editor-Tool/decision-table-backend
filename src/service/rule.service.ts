@@ -83,8 +83,8 @@ export default class ruleService{
             const res = await this.conditionService.getCondition(tableid, cond.id);
             const uuid = uuid4();
             const rItem : RuleItem = {
-                itemid: uuid,
-                item: res,
+                ruleItemid: uuid,
+                itemid: res.id,
                 valueid: cond.valueid
             }
             conds.push(rItem)
@@ -99,8 +99,8 @@ export default class ruleService{
             const res = await this.actionService.getActionById(action.id, tableid);
             const uuid = uuid4();
             const rItem : RuleItem = {
-                itemid: uuid,
-                item: res,
+                ruleItemid: uuid,
+                itemid: res.id,
                 valueid: action.valueid
             }
             acts.push(rItem)

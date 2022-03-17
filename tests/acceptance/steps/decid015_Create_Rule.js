@@ -86,9 +86,10 @@ Then('I receive a unique rule identifier', function () {
   });
 
 Then('created rule has specified condition with value {string} and action with value {string}', function (con_num, action_num) {
-    expect(rule.conditions[0].item.id).to.equal(condition.id)
+    console.log("rule: ", rule)
+    expect(rule.conditions[0].itemid).to.equal(condition.id)
     expect(rule.conditions[0].valueid).to.equal(con_num)
-    expect(rule.actions[0].item.id).to.equal(action.id)
+    expect(rule.actions[0].itemid).to.equal(action.id)
     expect(rule.actions[0].valueid).to.equal(action_num)
   });
 
