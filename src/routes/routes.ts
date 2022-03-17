@@ -40,6 +40,7 @@ conditionRouter.put("/", condition.updateConditionById);
 ruleRouter.post("/", rule.addRule);
 ruleRouter.get("/", rule.getRuleById);
 ruleRouter.delete("/", rule.deleteRuleById);
+ruleRouter.put("/", rule.updateRuleById);
 
 
 

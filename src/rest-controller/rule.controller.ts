@@ -43,5 +43,16 @@ export class ruleController {
         }
     }
 
+    public updateRuleById = async (req: Request, res: Response): Promise<void> => {
+        const { tableId, ruleId, conditions, actions } = req.body;
+        try {
+            const rule = await this.ruleService.updateRule(tableId, ruleId, conditions, actions);
+            res.status(201).json(rule);
+            res.send();
+        } catch (error) {
+            console.log(error)
+            res.status(400).send();
+        }
+    }
 
 }

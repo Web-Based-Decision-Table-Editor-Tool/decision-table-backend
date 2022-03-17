@@ -150,6 +150,75 @@ export default class ruleService{
 
         return acts;
     }
+
+    public async updateRule(tableId : string, ruleId : string, conditions: RuleApiInput[], actions: RuleApiInput[]) : Promise<Rule>{
+        //find table with id
+        const table = await this.decisionTableService.getTableById(tableId);
+        if(table == null){
+            throw("No table with matching Id exists, adding condition failed");
+        }
+
+        if(actions.length == 0 || conditions.length == 0){
+            throw("Rule must have at least 1 action and condition");
+        }
+        
+        conditions.forEach(element => {
+            if(element.id === undefined || element.id === null){
+                throw("Invalid input, must specify id for condition to add rule")
+            }
+            if(element.valueid === undefined || element.valueid === null){
+                throw("Invalid input, must specify value for condition to add rule")
+            }
+        });
+
+        actions.forEach(element => {
+            if(element.id === undefined || element.id === null){
+                throw("Invalid input, must specify id for action to add rule")
+            }
+            if(element.valueid === undefined || element.valueid === null){
+                throw("Invalid input, must specify value for action to add rule")
+            }
+        });
+        let ruleConditions : RuleItem[] = []
+        let ruleActions: RuleItem[] = []
+
+        try {
+            ruleConditions = await this.getConditionsForRule(tableId, conditions);
+        } catch (error) {
+            console.log(error)
+            throw("Error in querying condition(s) specified, verify that the specified ids are valid")
+        }
+
+        try {
+            ruleActions = await this.getActionsForRule(tableId, actions);
+        } catch (error) {
+            console.log(error)
+            throw("Error in querying action(s) specified, verify that the specified ids are valid")
+        }
+
+        // Get old rule to remove it from the table - it will be replaced by updated values
+        const oldRule : Rule = await this.getRuleById(tableId, ruleId);
+
+        // Remove old rule from the table
+        const index = table.rules.indexOf(oldRule);
+        table.rules.splice(index,1);
+
+        // creating the same rule with updated information
+        const rule : Rule = {
+            id: ruleId, // keeping the same id
+            conditions: ruleConditions,
+            actions: ruleActions
+        }
+        // add rule
+        table.rules.push(rule);
+
+        // save table
+        this.persistence.saveTable(table);
+
+        return rule;
+    }
+
+
 }
 
 
