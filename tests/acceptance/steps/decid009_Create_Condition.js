@@ -47,7 +47,13 @@ Then('a condition with a non-null id is created', function () {
 Then('the condition named {string} with type {string} and values {string} is created', function (con_name, con_type, con_vals) {
     expect(decid009Response.body.name).to.equal(con_name);
     expect(decid009Response.body.type).to.equal(con_type);
-    expect(decid009Response.body.valueList).to.eql(con_vals.split(','));
+    values = con_vals.split(',');
+    expect(decid009Response.body.valueList).to.not.equal(null);
+    valueList = decid009Response.body.valueList;
+    for(let i = 0; i < valueList.length; i++){
+        val = valueList[i].value;
+        expect(val).to.equal(values[i]);
+    }
 });
 
 

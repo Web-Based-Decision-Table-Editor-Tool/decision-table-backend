@@ -38,6 +38,9 @@ export default class actionService{
             throw("No table with matching Id exists, adding action failed");
         }
         
+        if(valueList == null || valueList == undefined || valueList.length == 0){
+            throw("Invalid values for specified type");
+        }
         
         const actionType = type.toLowerCase();
         if(!(actionType === 'boolean' || actionType ==='text' || actionType === 'numeric')){

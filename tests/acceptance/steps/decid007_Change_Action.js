@@ -64,15 +64,16 @@ When('I change the action named {string} to type {string} with {string} in decis
     decid007Response = await chai.request(host).put('/action').send(reqBody);
 });
 
-When('I change an action of name {string} to name {string} in decision table with id {string}', async function(old_action_name, new_action_name, dec_tag){
+When('I change an action of name {string} to name {string} for action with type {string} and values {string} in decision table with id {string}', async function(old_action_name, new_action_name, type, value_list, dec_tag){
 
+    values = value_list.split("!,!")
 
     let reqBody = {
         tableId: dec_tag,
         oldActionName: old_action_name,
         newActionName: new_action_name,
-        type: "",
-        valueList: ""
+        type: type,
+        valueList: values
     };
     decid007Response = await chai.request(host).put('/action').send(reqBody);
 });

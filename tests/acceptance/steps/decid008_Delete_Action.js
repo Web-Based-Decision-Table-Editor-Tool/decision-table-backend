@@ -48,7 +48,7 @@ When('I have created an action in {string} named {string} of type text', async f
         name: actionName,
         type: "text",
         tableId: dec_tag, 
-        valueList: "This is a test string"
+        valueList: ["This is a test string"]
     };
     decid008Response = await chai.request(host).post('/action').send(reqBody);
 });
@@ -58,7 +58,7 @@ When('I have created an action in {string} named {string} of type numeric', asyn
         name: actionName,
         type: "numeric",
         tableId: dec_tag, 
-        valueList: "10001"
+        valueList: ["10001"]
     };
     decid008Response = await chai.request(host).post('/action').send(reqBody);
 });
