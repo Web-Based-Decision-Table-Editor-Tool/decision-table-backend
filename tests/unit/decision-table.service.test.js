@@ -14,6 +14,5 @@ test('add table', async () => {
 
     const result = await service.addTable(name, description)
     
-    expect(result.id).toBe("dt_1");
     expect(result.status).toBe(201);
   });
