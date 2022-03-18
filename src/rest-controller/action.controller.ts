@@ -13,8 +13,9 @@ export class actionController {
       try {
           debugger;
           const { tableId, name , type, valueList } = req.body;
-          const id = await this.actionService.addAction(tableId, name, type, valueList);
-          const response = { id: id, msg: `action created with id: ${id}`, status: 201};
+          const action = await this.actionService.addAction(tableId, name, type, valueList);
+          const id = action.id;
+          const response = { id: id, msg: `action created with id: ${id}`, status: 201, action: action};
           res.status(201).json(response);
       } catch (error) {
           const errorResponse = { msg: error, status: 400}

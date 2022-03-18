@@ -71,7 +71,7 @@ export default class actionService{
         table.actions.push(action);
         this.persistence.saveTable(table);
 
-        return uuid;
+        return action;
     }
 
     public async changeAction(tableId : string, oldActionName : string, newActionName : string, type: string, valueList : string[]) {
