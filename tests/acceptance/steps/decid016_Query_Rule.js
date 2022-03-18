@@ -3,6 +3,8 @@ const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { response } = require("express");
+const { createDecTable } = require('./TestUtils');
+
 
 chai.use(chaiHttp);
 const host = 'localhost:3000';
@@ -10,52 +12,63 @@ const host = 'localhost:3000';
 
 var decid016Response;
 var createdAction; 
-var condition;
+var createdCondition;
+var createdRule;
+var queriedRule;
 
-Given('I have created a condition of type {string} named {string} to decision table with id {string} with condition values: {string} and {string}', async function (condition_type, condition_name, dec_tag, condition_value1, condition_value2) {
-    decid016Response = await chai
-        .request(host)
-        .post("/condition")
-        .send({ tableId: dec_tag, name: condition_name, type: condition_type, valueList: [condition_value1, condition_value2]});
-
-    condition = decid016Response.body.id;
+Given('I have created decision table named {string} for querying rule', async function(dec_name) {
+    tableId = await createDecTable(dec_name, "table description");
 });
 
-Given('I have added an action of type {string} named {string} to decision table with id {string} with action values: {string} and {string}', async function(action_type, action_name, dec_tag, action_value1, action_value2) {
-    
+Given('I have a condition in this table named {string} with type {string} and values {string} for querying rule', async function (con_name, con_type, con_vals) {
     decid016Response = await chai
         .request(host)
         .post("/condition")
-        .send({ tableId: dec_tag, name: action_name, type: action_type, valueList: [action_value1, action_value2]});
+        .send({ tableId: tableId, name: con_name, type: con_type, valueList: con_vals.split(',') });
+        
+    createdCondition = decid016Response.body;
+  });
 
-    actionID = decid016Response.body.id;
-});
-
-When('I have added a rule associating condition named {string} and its value {string} to action named {string} and its value {string}', async function (tableID) {
+Given('I have an action in this table of type {string} named {string} with action values: {string} for querying rule', async function (action_type, action_name, action_values) {
     
     decid016Response = await chai
         .request(host)
-        .post("/condition")
-        .send({ tableId: dec_tag, name: action_name, type: action_type, valueList: [action_value1, action_value2]});
-
+        .post("/action")
+        .send({ tableId: tableId, name: action_name, type: action_type, valueList: action_values.split(',') });
+        
+    createdAction = decid016Response.body.action;
     
-    let reqBody = {
-        tableId : tableID,
-        actionId: actionID
+  });
+
+Given('I have created a rule in this table with condition {string} and condition value {string}, and action {string} and action value {string} for querying rule', async function (con_name, con_num, action_name, action_num) {
+    
+    const reqBody = {
+        tableId: tableId,
+        conditions: [{ id: createdCondition.id, valueid: con_num}],
+        actions: [{ id: createdAction.id, valueid: action_num}]
     }
-    // Write code here that turns the phrase above into concrete actions
-    decid006Response = await chai
-        .request(host)
-        .get("/action/" + actionID).send(reqBody);
     
+    decid016Response = await chai.request(host).post('/rule').send(reqBody);
+    createdRule = decid016Response.body
 });
 
-Then('the returned action should have type boolean and name {string}', function (name) {
+When('I query the created rule with its unique id', async function () {
+    
+    const reqBody = {
+        tableId: tableId,
+        ruleId: createdRule.id,
+    }
+    
+    decid016Response = await chai.request(host).get('/rule').send(reqBody);
+    queriedRule = decid016Response.body.rule;
+});
+
+Then('the recieved rule is identical to the previously created rule', function () {
     // Write code here that turns the phrase above into concrete actions
-    expect(decid006Response.body.name).to.equal(name);
+    expect(JSON.stringify(queriedRule)).to.equal(JSON.stringify(createdRule));
   });
 
-Then('I receive an error code as {int} for querying an action', function (code) {
+Then('I receive an error code as {int} for querying rule', function (response_code) {
     // Write code here that turns the phrase above into concrete actions
-    expect(decid006Response).to.have.status(code);
-  });
+    expect(decid016Response.status).to.equal(response_code)
+});
