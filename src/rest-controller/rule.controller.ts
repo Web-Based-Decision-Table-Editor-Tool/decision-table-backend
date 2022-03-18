@@ -35,7 +35,7 @@ export class ruleController {
         const { tableId, ruleId } = req.body;
         try {
             const removedRuleId = await this.ruleService.deleteRuleById(tableId, ruleId);
-            const response = {msg: `Rule with ID: ${removedRuleId} deleted`, status: 200};
+            const response = {msg: `Rule with ID: ${removedRuleId} deleted`, status: 200, id: removedRuleId};
             res.send(response);
         } catch (error) {
             console.log(error)
