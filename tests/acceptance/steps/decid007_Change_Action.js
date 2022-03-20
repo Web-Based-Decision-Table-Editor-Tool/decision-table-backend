@@ -10,6 +10,7 @@ const host = 'localhost:3000';
 
 var decid007Response = null;
 var tableId;
+var action;
 
  Given("I have created decision table named {string} for updating action", async function(dec_name){
     tableId = await createDecTable(dec_name, "table description");
@@ -28,6 +29,7 @@ var tableId;
         valueList: old_value_list
     };
     decid007Response = await chai.request(host).post('/action').send(reqBody);
+    action = decid007Response.body.action;
 });
 
 When('I change the action named {string} to type {string} with {string} in decision table', async function(old_action_name, new_action_type, new_value_list){
@@ -38,7 +40,7 @@ When('I change the action named {string} to type {string} with {string} in decis
 
     let reqBody = {
         tableId: tableId,
-        oldActionName: old_action_name,
+        actionId: action.id,
         newActionName: "",
         type: new_action_type,
         valueList: new_value_list
@@ -52,7 +54,7 @@ When('I change an action of name {string} to name {string} for action with type 
 
     let reqBody = {
         tableId: tableId,
-        oldActionName: old_action_name,
+        actionId: action.id,
         newActionName: new_action_name,
         type: type,
         valueList: values

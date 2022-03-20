@@ -17,15 +17,15 @@ Acceptance Tests
 Scenario Outline: Delete an action from a decision table (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> for delete action
-And I have created an action named <action_name> of type <type> 
+And I have created decision table named <dec_name> for deleting action
+And I have created an action named <action_name> of type <type> for deleting action
 When I delete the action <action_name>
 Then I receive identifier for the deleted action
 And I receive an error code for action delete request as <delete_action_response_code>
 
 Examples:
 
-| dec_name  | dec_tag | action_name    | type       | delete_action_response_code | Comment |
-| "RobSab01" | "dt_1"  | "booleanTest"  | boolean   | 204                  |         |
-| "RobSab02" | "dt_2"  | "textTest"     | text      | 204                  |         |
-| "RobSab03" | "dt_3"  | "numericTest"  | numeric   | 204                  |         |
+| dec_name  | dec_tag | action_name     | type       | delete_action_response_code | Comment |
+| "RobSab01" | "dt_1"  | "booleanTest"  | "boolean"   | 204                  |         |
+| "RobSab02" | "dt_2"  | "textTest"     | "text"      | 204                  |         |
+| "RobSab03" | "dt_3"  | "numericTest"  | "numeric"   | 204                  |         |

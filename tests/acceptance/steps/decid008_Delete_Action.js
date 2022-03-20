@@ -10,45 +10,46 @@ const chai = require("chai");
 
  var decid008Response = null;
  var tableId;
+ var action;
+ var reqBody;
 
-Given("I have created decision table named {string} for delete action", async function(dec_name){
+Given("I have created decision table named {string} for deleting action", async function(dec_name){
     tableId = await createDecTable(dec_name, "table description");
 });
 
-  When('I have created an action named {string} of type boolean', async function(actionName){
-    let reqBody = {
-        name: actionName,
-        type: "boolean",
-        tableId, 
-        valueList: ["boolVal1", "boolVal2"] 
-    };
+When('I have created an action named {string} of type {string} for deleting action', async function(actionName, type){
+    if(type == "text") {
+        reqBody = {
+            name: actionName,
+            type: "text",
+            tableId: tableId, 
+            valueList: ["This is a test string"]
+        };
+    } else if (type == "numeric") {
+        reqBody = {
+            name: actionName,
+            type: "numeric",
+            tableId: tableId, 
+            valueList: ["10001"]
+        };
+    } else if (type == "boolean") {
+        reqBody = {
+            name: actionName,
+            type: "boolean",
+            tableId: tableId, 
+            valueList: ["boolVal1", "boolVal2"] 
+        };
+    }
+    
     decid008Response = await chai.request(host).post('/action').send(reqBody);
-});
+    action = decid008Response.body.action;
 
-When('I have created an action named {string} of type text', async function(actionName){
-    let reqBody = {
-        name: actionName,
-        type: "text",
-        tableId, 
-        valueList: ["This is a test string"]
-    };
-    decid008Response = await chai.request(host).post('/action').send(reqBody);
-});
-
-When('I have created an action named {string} of type numeric', async function(actionName){
-    let reqBody = {
-        name: actionName,
-        type: "numeric",
-        tableId, 
-        valueList: ["10001"]
-    };
-    decid008Response = await chai.request(host).post('/action').send(reqBody);
 });
 
  When('I delete the action {string}', async function(actionName){
      let reqBody = {
-         id: tableId,
-         actionName: actionName
+         tableId: tableId,
+         actionId: action.id
      };
      decid008Response = await chai.request(host).delete('/action').send(reqBody);
  });
