@@ -33,18 +33,21 @@ jobs:
     
   build:
     needs: setup
+    runs-on: ubuntu-latest
     steps:
       - name: Generate build
         run: npm run build
 
   unit-tests:
     needs: setup
+    runs-on: ubuntu-latest
     steps:
       - name: Run Unit tests
         run: npm test
   
   acceptance:
     needs: setup
+    runs-on: ubuntu-latest
     steps:
       - name: Acceptance tests
         run: npm run cucumber
