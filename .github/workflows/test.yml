@@ -50,7 +50,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      
+
+      - name: Create Filestore
+        run: |
+          mkdir -p fileStore
+          
       - name: Run acceptance tests
         run: npm run cucumber
-        
