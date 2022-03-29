@@ -30,14 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-    
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate build
-        run: npm run build
-
+  
   unit-tests:
     needs: setup
     runs-on: ubuntu-latest
