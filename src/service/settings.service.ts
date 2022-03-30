@@ -16,4 +16,9 @@ export default class settingsService{
         }
         return numTables
     }
+
+    public async getMaxTables(): Promise<Number> {
+        const max = await this.persistence.getSettings().maxTables;
+        return max;
+    }
 }

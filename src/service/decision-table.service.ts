@@ -2,12 +2,13 @@ import { Service } from 'typedi';
 import { ITableResponse, ITableNameResponse, ErrorResponse, ITableNoteResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
+import settingsService from './settings.service';
 
 @Service()
 export default class decisionTableService{
     lastId: number;
     
-    constructor(private persistence : decisionTablePersistence){
+    constructor(private persistence : decisionTablePersistence, private settingsService: settingsService){
         this.lastId = -1;
     }
 
@@ -16,7 +17,13 @@ export default class decisionTableService{
     }
 
     private async addNewTable(name: string, note: string){
-
+        //check if total tables < administrator config
+        const count = await this.persistence.getTotalTableCount()
+        const maxTables = await this.settingsService.getMaxTables()
+        if(count >= maxTables){
+            console.error("Max number of tables reached!")
+            return {id: "", status: 400}
+        }
         //reject empty name
         if(name.trim().length == 0){
             return {id: "", status: 400}

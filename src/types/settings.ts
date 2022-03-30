@@ -1,6 +1,6 @@
 export interface Settings {
-    maxTables?: Number,
-    maxRules?: Number,
-    maxConditions?: Number,
-    maxActions?: Number
+    maxTables: Number,
+    maxRules: Number,
+    maxConditions: Number,
+    maxActions: Number
 }

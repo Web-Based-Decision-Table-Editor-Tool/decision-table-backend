@@ -24,11 +24,11 @@ export default class settingsPersistence{
 
     public getSettings(): Settings {
         try {
-            const settings : Settings =  JSON.parse(fs.readFileSync(this.path, 'utf8'));
+            const settings : Settings = JSON.parse(fs.readFileSync(this.path, 'utf8'));
             return settings
         } catch (err) {
             console.error(err)
-            return {} //empty settings
+            return this.defaultSettings //empty settings
         }
     }
     

@@ -115,5 +115,10 @@ export default class decisionTablePersistence{
 
     }
 
+    public async getTotalTableCount() : Promise<Number> {
+        const files = await fs.promises.readdir(this.baseDir);
+        return files.length
+    }
+
     
 }
