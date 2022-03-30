@@ -8,6 +8,12 @@ const mock = jest.fn().mockImplementation(() => (
       },
       async saveTable(table: DecisionTable){
         // empty implementation
+      },
+      async getTotalTableCount() {
+        return 1;
+      },
+      async getMaxTables(){
+        return 1000;
       }
     }
   )
