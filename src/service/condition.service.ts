@@ -4,6 +4,8 @@ import uuid4 from "uuid4"
 import decisionTableService from './decision-table.service';
 import { Condition } from '../types/condition';
 import { ValueItem } from '../types/value-item';
+import data from '../adminConfig.json';
+
 
 
 @Service()
@@ -30,6 +32,9 @@ export default class conditionService{
         return valueItems;
     }
     public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<Condition>{
+
+        //get config for max num of conditions
+        const maxConditionsInTable = (<any>data).maxConditionsInTable;
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -62,9 +67,14 @@ export default class conditionService{
             valueList: vals
         }
 
-        // add condition to decTable
-        table.conditions.push(condition);
-        this.persistence.saveTable(table);
+        // add condition to decTable, after checking maxConditionsInTable constraint not violated
+        if(table.conditions.length < maxConditionsInTable) {
+            table.conditions.push(condition);
+            this.persistence.saveTable(table);
+            return condition;
+        } else {
+            throw("Max number of conditions in a table reached")
+        }
 
         return condition;
     }

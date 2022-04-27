@@ -6,6 +6,8 @@ import { Rule, RuleApiInput, RuleItem } from '../types/rule';
 import { table } from 'console';
 import conditionService from './condition.service';
 import actionService from './action.service';
+import data from '../adminConfig.json';
+
 
 
 @Service()
@@ -61,6 +63,9 @@ export default class ruleService{
     
 
     public async addRule(tableId : string, conditions: RuleApiInput[], actions: RuleApiInput[]) : Promise<Rule>{
+
+         //get config for max num of rules
+         const maxRulesInTable = (<any>data).maxRulesInTable;
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -114,8 +119,17 @@ export default class ruleService{
             conditions: ruleConditions,
             actions: ruleActions
         }
-        table.rules.push(rule);
-        this.persistence.saveTable(table);
+
+        // add rule to decTable, after checking maxRulesInTable constraint not violated
+        if(table.rules.length < maxRulesInTable) {
+            table.rules.push(rule);
+            this.persistence.saveTable(table);
+            return rule;
+        } else {
+            throw("Max number of rules in a table reached")
+        }
+
+        
         return rule;
     }
 
