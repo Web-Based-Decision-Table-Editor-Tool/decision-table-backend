@@ -1,0 +1,5 @@
+{
+    "maxActionsInTable": 20,
+    "maxRulesInTable": 30,
+    "maxConditionsInTable": 20
+}

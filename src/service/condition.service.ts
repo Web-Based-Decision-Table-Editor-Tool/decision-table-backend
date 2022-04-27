@@ -3,11 +3,15 @@ import decisionTablePersistence from "../persistence/decision-table.persistence"
 import uuid4 from "uuid4"
 import decisionTableService from './decision-table.service';
 import { Condition } from '../types/condition';
+import data from '../adminConfig.json';
+
+
+
 
 
 @Service()
 export default class conditionService{
-   
+
     // passing dependencies
     constructor(private decisionTableService : decisionTableService,
                 private persistence : decisionTablePersistence){
@@ -16,6 +20,7 @@ export default class conditionService{
 
     public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<Condition>{
         
+        const maxActionsInTable = (<any>data).maxActionsInTable;
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
         if(table == null){
@@ -47,10 +52,14 @@ export default class conditionService{
         }
 
         // add condition to decTable
-        table.conditions.push(condition);
-        this.persistence.saveTable(table);
-
-        return condition;
+        if(table.conditions.length < maxActionsInTable) {
+            table.conditions.push(condition);
+            this.persistence.saveTable(table);
+            return condition;
+        } else {
+            throw("Max number of conditions in a table reached")
+        }
+        
     }
 
     public async getCondition(tableId: string, conditionId: string) : Promise<Condition> {
