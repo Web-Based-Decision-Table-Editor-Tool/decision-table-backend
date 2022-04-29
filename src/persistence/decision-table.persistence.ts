@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import fs from 'fs';
 import { DecisionTable } from '../types/decision-table';
+import data from '../adminConfig.json';
 
 @Service()
 export default class decisionTablePersistence{
@@ -24,7 +25,16 @@ export default class decisionTablePersistence{
         //check if file store exists, if not then create it
         this.verifyFileStore();
         try {
-            fs.writeFileSync(`${this.baseDir}${table.id}.json`, JSON.stringify(table))
+            const decTableFileContents = JSON.stringify(table);
+            const decTableFileContentsSizeBytes = Buffer.byteLength(decTableFileContents, "utf-8");
+            const maxDecTableSizeBytes = (<any>data).maxTableSizeBytes;
+
+            if(decTableFileContentsSizeBytes > maxDecTableSizeBytes){
+                throw(`ERROR: Decision table (size: ${decTableFileContentsSizeBytes} bytes) exceeds maximum allowed table size of ${maxDecTableSizeBytes} bytes`)
+            }
+            
+
+            fs.writeFileSync(`${this.baseDir}${table.id}.json`, decTableFileContents)
         } catch (err) {
             console.error(err)
         }

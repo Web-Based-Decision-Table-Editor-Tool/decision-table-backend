@@ -3,6 +3,9 @@ import decisionTablePersistence from "../persistence/decision-table.persistence"
 import uuid4 from "uuid4"
 import decisionTableService from './decision-table.service';
 import { Condition } from '../types/condition';
+import { ValueItem } from '../types/value-item';
+import data from '../adminConfig.json';
+
 
 
 @Service()
@@ -13,8 +16,25 @@ export default class conditionService{
                 private persistence : decisionTablePersistence){
     
     }
-
+    private getConditonValueItems(valueList: string[]) : ValueItem[] {
+        //Generate id for each value item
+        let item = 1;
+        const valueItems: ValueItem[] = []
+        valueList.forEach(element => {
+            const id = "condition-value-" + item;
+            item++;
+            let val: ValueItem = {
+                id: id,
+                value: element
+            }
+            valueItems.push(val);
+        });
+        return valueItems;
+    }
     public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<Condition>{
+
+        //get config for max num of conditions
+        const maxConditionsInTable = (<any>data).maxConditionsInTable;
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -38,17 +58,23 @@ export default class conditionService{
         // Generate unique id
         const uuid = uuid4();
 
+        const vals = this.getConditonValueItems(valueList);
         // building condition object
         let condition : Condition = {
             id: uuid,
             name,
             type,
-            valueList
+            valueList: vals
         }
 
-        // add condition to decTable
-        table.conditions.push(condition);
-        this.persistence.saveTable(table);
+        // add condition to decTable, after checking maxConditionsInTable constraint not violated
+        if(table.conditions.length < maxConditionsInTable) {
+            table.conditions.push(condition);
+            this.persistence.saveTable(table);
+            return condition;
+        } else {
+            throw("Max number of conditions in a table reached")
+        }
 
         return condition;
     }
@@ -106,13 +132,13 @@ export default class conditionService{
 
         // Use same ID as previous condition for our new condition (because we are overwriting it)
         const uuid = conditionId;
-
+        const valitems = this.getConditonValueItems(valueList)
         // building the new condition object
         let newCondition : Condition = {
             id: uuid,
             name,
             type,
-            valueList
+            valueList: valitems
         }
 
         //Add new, updated condition to the table
