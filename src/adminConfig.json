@@ -1,5 +1,6 @@
 {
     "maxActionsInTable": 20,
     "maxRulesInTable": 30,
-    "maxConditionsInTable": 20
+    "maxConditionsInTable": 20,
+    "maxTableSizeBytes": 500000000
 }
