@@ -17,8 +17,7 @@ test('add table', async () => {
     expect(result.status).toBe(201);
   });
 
-
-test('Get table name by ID', async () => {
+  test('Get table name by ID', async () => {
     const persistence = new decisionTablePersistence();
     const service = new decisionTableService(persistence);
 
@@ -29,5 +28,5 @@ test('Get table name by ID', async () => {
 
     const nameByGetName = await service.getTableNameById(result.id)
 
-    expect(nameByGetName).toBe(name);
+    expect(nameByGetName.name).toBe(name);
   });
