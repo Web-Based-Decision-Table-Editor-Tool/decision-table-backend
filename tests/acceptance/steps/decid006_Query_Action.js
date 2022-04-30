@@ -3,6 +3,7 @@ const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { response } = require("express");
+const { createDecTable } = require('./TestUtils');
 
 chai.use(chaiHttp);
 const host = 'localhost:3000';
@@ -10,21 +11,26 @@ const host = 'localhost:3000';
 
 var decid006Response;
 var actionID; 
+var tableId;
 
-Given('I have created an action of type boolean named {string} to decision table with id {string} with action values: {string} and {string}', async function(actionName, table_id, value1, value2){
+Given("I have created decision table named {string} for query action", async function(dec_name){
+    tableId = await createDecTable(dec_name, "table description");
+});
+
+Given('I have created an action of type boolean named {string} to decision table with action values: {string} and {string}', async function(actionName, value1, value2){
     let reqBody = {
         name: actionName,
         type: "boolean",
-        tableId: table_id, 
+        tableId: tableId, 
         valueList: [value1, value2] 
     };
     let resp = await chai.request(host).post('/action').send(reqBody);
     actionID = resp.body.id;
 });
 
-When('I query the action in decision table with id {string}', async function (tableID) {
+When('I query the action in decision table', async function () {
     let reqBody = {
-        tableId : tableID,
+        tableId,
         actionId: actionID
     }
     // Write code here that turns the phrase above into concrete actions

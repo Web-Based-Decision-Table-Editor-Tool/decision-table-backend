@@ -24,8 +24,8 @@ When('I create decision table with invlaid name {string} with note {string}', as
         .send({ name: dec_name, note: dec_note});
 });
 
-Then('I receive identifier stored as tag {string}', function (dec_tag) {
-    //expect(decid001Response.body.id).to.equal(dec_tag);
+Then('I receive an id for the table', function () {
+    expect(decid001Response.body.id).to.not.equal(null);
 });
 
 Then('I receive an error code as {int}', function (errorCode) {
