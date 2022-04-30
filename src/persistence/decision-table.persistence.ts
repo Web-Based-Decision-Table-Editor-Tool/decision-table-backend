@@ -91,6 +91,18 @@ export default class decisionTablePersistence{
         }
     }
 
+    public async changeTableNoteById(id: string, newNote: string): Promise<string> {
+        const dt : DecisionTable | null = this.loadTable(id);
+        
+        if(dt == null) {
+            throw("No such table with matching ID exists. No changes made.")
+        } else {
+            dt.note = newNote;
+            this.saveTable(dt);
+            return dt.note;
+        }
+    }
+
     public async getTableNameById(id: string): Promise<string> {
 
         const dt : DecisionTable | null = this.loadTable(id);

@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import decisionTableService from '../service/decision-table.service';
 import { Request, Response } from "express";
-import { ITableResponse, ITableNameResponse } from '../types/interfaces';
+import { ITableResponse, ITableNameResponse, ITableNoteResponse } from '../types/interfaces';
 
 @Service()
 export class decisionTableController {
@@ -18,6 +18,20 @@ export class decisionTableController {
             const status = response.status;
             const name = response.name;
             res.status(status).json({ name, status});
+        } catch {
+            res.status(500);
+        }
+    }
+
+    public changeTableNoteById = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const id = req.body.id;
+            const tableNote = req.body.note
+            const response : ITableNoteResponse = await this.service.changeTableNote(id, tableNote);
+            
+            const status = response.status;
+            const note = response.note;
+            res.status(status).json({ note, status});
         } catch {
             res.status(500);
         }

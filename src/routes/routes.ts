@@ -22,6 +22,7 @@ const ruleRouter = Router();
 decisionTableRouter.post("/", decisionTable.addTable);
 decisionTableRouter.delete("/:id", decisionTable.deleteTable);
 decisionTableRouter.put("/", decisionTable.changeTableNameById);
+decisionTableRouter.put("/note", decisionTable.changeTableNoteById);
 decisionTableRouter.get("/:id", decisionTable.getTableNameById);
 
 // action endpoints

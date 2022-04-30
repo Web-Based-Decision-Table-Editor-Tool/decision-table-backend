@@ -8,6 +8,11 @@ export interface ITableNameResponse {
     status: number;
 }
 
+export interface ITableNoteResponse {
+    note: string;
+    status: number;
+}
+
 export interface ErrorResponse {
     msg: string;
     status: number;
