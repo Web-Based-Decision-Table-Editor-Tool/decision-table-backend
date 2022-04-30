@@ -1,4 +1,3 @@
-@ChangeDecisionTableNameFeature
 Feature: Query Condition from a Decision Table Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -18,9 +17,9 @@ Acceptance Tests
 Scenario Outline: Query a Condition Normal Flow / Error Flow
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
-And I have created a condition of type <type> named <condition_name> to decision table with id <dec_tag> with condition values: <value1> and <value2>
-When I query the condition in decision table with id <dec_tag>
+And I have created decision table named <dec_name> for query condition
+And I have created a condition of type <type> named <condition_name> to decision table with condition values: <value1> and <value2>
+When I query the condition in decision table
 Then the returned condition should have type <type> and name <condition_name> 
 And I receive an error code as <condition_response_code> for querying a condition
 

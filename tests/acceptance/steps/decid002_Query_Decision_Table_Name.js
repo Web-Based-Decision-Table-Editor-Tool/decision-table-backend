@@ -1,7 +1,7 @@
 const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
-const { When, Then } = require("@cucumber/cucumber");
+const { When, Then, Given } = require("@cucumber/cucumber");
 const { createDecTable } = require('./TestUtils');
 
 chai.use(chaiHttp);
@@ -9,15 +9,18 @@ const host = 'localhost:3000';
 
 
 var decid002Response;
+var tableId;
 
 //When I query the name of Decision Table <dec_tag>
+Given('I have created decision table named {string}', async function(dec_name) {
+    tableId = await createDecTable(dec_name, "table description");
+});
 
-When('I query the name of Decision Table {string}', async function (dec_tag) {
-    // Write code here that turns the phrase above into concrete actions
+When('I query the name of Decision Table', async function() {
     decid002Response = await chai
         .request(host)
-        .get("/table/" + dec_tag);
-    });
+        .get("/table/" + tableId);
+});
 
 Then('the returned name should match {string}', function(dec_name) {
     expect(decid002Response.body.name).to.equal(dec_name);

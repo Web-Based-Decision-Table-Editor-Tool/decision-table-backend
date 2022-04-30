@@ -1,4 +1,3 @@
-@ChangeDecisionTableNameFeature
 Feature: Change Decision Table Name Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -18,8 +17,8 @@ Acceptance Tests
 Scenario Outline: Change a decision table (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
-When I change the name of Decision Table <dec_tag> to <new_dec_name>
+And I have created decision table named <dec_name> for updating
+When I change the name of Decision Table to <new_dec_name>
 Then I receive the new name matching <new_dec_name>
 And I receive an error code as <dec_response_code> for name change
 

@@ -1,5 +1,6 @@
 import { Action } from "./action";
 import { Condition } from "./condition";
+import { Rule } from "./rule";
 
 export interface DecisionTable{
     id: string,
@@ -7,6 +8,7 @@ export interface DecisionTable{
     note: string,
     email: string,
     lastUsedDate: Date,
-    actions: Action[]
-    conditions: Condition[]
+    actions: Action[],
+    conditions: Condition[],
+    rules: Rule[]
 }

@@ -1,4 +1,3 @@
-@CreateActionFeature
 Feature: Create Action in Decision Table Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -18,8 +17,8 @@ Acceptance Tests
 Scenario Outline: Add an action with type boolean to a decision table (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
-When I add an action of type <type> named <action_name> to decision table with id <dec_tag> with action values: <value1> and <value2>
+And I have created decision table named <dec_name> for adding action
+When I add an action of type <type> named <action_name> to decision table with action values: <value1> and <value2>
 Then I receive an identifier for the action
 And I receive a success code <action_response_code> for create action
 
@@ -32,7 +31,7 @@ Scenario Outline: Add an action with type boolean to a decison table that does n
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
 And decision table with id <dec_tag> does not exist
-When I add an action of type <type> named <action_name> to decision table with id <dec_tag> with action values: <value1> and <value2>
+When I add an action of type <type> named <action_name> to decision table with invalid id with action values: <value1> and <value2>
 Then I receive an action error code as <action_response_code>
 
 Examples:
