@@ -1,48 +1,31 @@
 const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
-const { When, Then, Before } = require("@cucumber/cucumber");
-const { resetFileStore, shutdown, startServer } = require('./TestUtils');
+const { Given, When, Then, Before } = require("@cucumber/cucumber");
+const { createDecTable } = require('./TestUtils');
 
 
 chai.use(chaiHttp);
 const host = 'localhost:3000';
 
 var decid004Response = null;
+var tableId;
 
-/*
- Background: 
- 'Before' normally executes before every scenario of every feature file
- Therefore, tags is added so that 'Before' is only executed for the features identified in tags
+Given('I have created decision table named {string} for deletion', async function(dec_name) {
+    tableId = await createDecTable(dec_name, "table description");
+});
 
- Behaviour: 
- The logic resets the filestore, shutsdown the server and restarts the server. 
- */
- let executeOnce = false;
- Before({tags: "@DeleteDecisionTableFeature", timeout: 15 * 2000}, async function () {
-     try {
-         // Only execute this logic before the first scenario of DeleteDecisionTableFeature
-         if(!executeOnce){
-             await resetFileStore();
-             await shutdown();
-             await startServer();
-             executeOnce = true;
-         }
-     } catch (err) {
-           console.log(err);
-     }
- })
-
-When('I delete the Decision Table {string}', async function(dec_tag){
-    decid004Response = await chai.request(host).delete(`/table/${dec_tag}`);
+When('I delete the Decision Table by id', async function(){
+    decid004Response = await chai.request(host).delete(`/table/${tableId}`);
 });
 
 When('I delete a decision table with invlaid tag {string}', async function(dec_tag){
     decid004Response = await chai.request(host).delete(`/table/${dec_tag}`);
 });
 
-Then('I receive identifier deleted as tag {string}', async function(dec_tag){
-    expect(1).to.equal(1);
+// Then I receive id of deleted table
+Then('I receive id of deleted table', function () {
+    expect(decid004Response.id).to.be.not.equal(null);
 });
 
 Then('I receive an error code for delete request as {int}', async function(dec_response_code){

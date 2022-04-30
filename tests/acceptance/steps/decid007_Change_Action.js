@@ -2,38 +2,21 @@ const chai = require("chai");
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
 const { When, Then, Before, Given } = require("@cucumber/cucumber");
-const { resetFileStore, shutdown, startServer } = require('./TestUtils');
+const { createDecTable } = require('./TestUtils');
 
 
 chai.use(chaiHttp);
 const host = 'localhost:3000';
 
 var decid007Response = null;
+var tableId;
+var action;
 
-/*
- Background: 
- 'Before' normally executes before every scenario of every feature file
- Therefore, tags is added so that 'Before' is only executed for the features identified in tags
+ Given("I have created decision table named {string} for updating action", async function(dec_name){
+    tableId = await createDecTable(dec_name, "table description");
+});
 
- Behaviour: 
- The logic resets the filestore, shutsdown the server and restarts the server. 
- */
- let executeOnce = false;
- Before({tags: "@ChangeActionFeature", timeout: 15 * 2000}, async function () {
-     try {
-         // Only execute this logic before the first scenario of DeleteDecisionTableFeature
-         if(!executeOnce){
-             await resetFileStore();
-             await shutdown();
-             await startServer();
-             executeOnce = true;
-         }
-     } catch (err) {
-           console.log(err);
-     }
- })
-
- Given('I have added an action of type {string} named {string} with {string} to decision table with id {string}', async function(old_action_type, old_action_name, old_value_list, dec_tag){
+ Given('I have added an action of type {string} named {string} with {string} to decision table', async function(old_action_type, old_action_name, old_value_list){
 
     //Split into an array of strings if !,! sequence detected,
     //Else leave it as it is
@@ -42,21 +25,22 @@ var decid007Response = null;
     let reqBody = {
         name: old_action_name,
         type: old_action_type,
-        tableId: dec_tag,
+        tableId: tableId,
         valueList: old_value_list
     };
     decid007Response = await chai.request(host).post('/action').send(reqBody);
+    action = decid007Response.body.action;
 });
 
-When('I change the action named {string} to type {string} with {string} in decision table with id {string}', async function(old_action_name, new_action_type, new_value_list, dec_tag){
+When('I change the action named {string} to type {string} with {string} in decision table', async function(old_action_name, new_action_type, new_value_list){
 
     //Split into an array of strings if !,! sequence detected,
     //Else leave it as it is
     new_value_list = new_value_list.split("!,!")
 
     let reqBody = {
-        tableId: dec_tag,
-        oldActionName: old_action_name,
+        tableId: tableId,
+        actionId: action.id,
         newActionName: "",
         type: new_action_type,
         valueList: new_value_list
@@ -64,15 +48,16 @@ When('I change the action named {string} to type {string} with {string} in decis
     decid007Response = await chai.request(host).put('/action').send(reqBody);
 });
 
-When('I change an action of name {string} to name {string} in decision table with id {string}', async function(old_action_name, new_action_name, dec_tag){
+When('I change an action of name {string} to name {string} for action with type {string} and values {string} in decision table', async function(old_action_name, new_action_name, type, value_list){
 
+    values = value_list.split("!,!")
 
     let reqBody = {
-        tableId: dec_tag,
-        oldActionName: old_action_name,
+        tableId: tableId,
+        actionId: action.id,
         newActionName: new_action_name,
-        type: "",
-        valueList: ""
+        type: type,
+        valueList: values
     };
     decid007Response = await chai.request(host).put('/action').send(reqBody);
 });

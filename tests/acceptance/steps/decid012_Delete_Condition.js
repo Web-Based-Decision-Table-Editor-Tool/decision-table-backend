@@ -12,9 +12,8 @@ var decid012Response;
 var globDec_tag;
 var globCon_response;
 
-Given('I have created decision table named {string} identified as {string} for condition delete', async function(dec_name, dec_tag) {
+Given('I have created decision table named {string} for delete condition', async function(dec_name) {
     globDec_tag = await createDecTable(dec_name, "table description");
-    expect(1).to.equal(1);
 });
 
 Given('I have created a condition named {string} with type {string} and values {string} for this table for condition delete', async function (con_name, con_type, con_vals) {
