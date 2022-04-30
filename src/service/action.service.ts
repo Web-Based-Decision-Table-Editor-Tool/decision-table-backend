@@ -3,6 +3,7 @@ import decisionTablePersistence from "../persistence/decision-table.persistence"
 import uuid4 from "uuid4"
 import decisionTableService from './decision-table.service';
 import { Action } from '../types/action';
+import { ValueItem } from '../types/value-item';
 
 
 @Service()
@@ -13,6 +14,22 @@ export default class actionService{
     
     }
 
+    private getActionItemsFromValues( valueList : string[]): ValueItem[] {
+        //Generate id for each value item
+        let item = 1;
+        const valueItems: ValueItem[] = []
+        valueList.forEach(element => {
+            const id = "action-value-" + item;
+            item++;
+            let val: ValueItem = {
+                id: id,
+                value: element
+            }
+            valueItems.push(val);
+        });
+        return valueItems;
+    }
+
     public async addAction(tableId : string, name : string, type: string, valueList : string[]) {
         
         //find table with id
@@ -21,9 +38,12 @@ export default class actionService{
             throw("No table with matching Id exists, adding action failed");
         }
         
+        if(valueList == null || valueList == undefined || valueList.length == 0){
+            throw("Invalid values for specified type");
+        }
         
         const actionType = type.toLowerCase();
-        if(!(actionType === 'boolean' || actionType ==='text' ||actionType === 'numeric')){
+        if(!(actionType === 'boolean' || actionType ==='text' || actionType === 'numeric')){
             throw("Invalid type. Must be one of: boolean, text, numeric");
         }
 
@@ -31,42 +51,53 @@ export default class actionService{
         if(type.toLowerCase() === 'boolean' && valueList.length != 2){
             throw("Invalid values for specified type");
         }
+
         //TODO: add validation for numeric type
 
 
         //Generate unique id
         const uuid = uuid4();
 
+        const valueItems = this.getActionItemsFromValues(valueList)
+
         let action : Action = {
             id: uuid,
             name,
             type,
-            valueList
+            valueList: valueItems
         }
 
         // add action to decTable
         table.actions.push(action);
         this.persistence.saveTable(table);
 
-        return uuid;
+        return action;
     }
 
-    public async changeAction(tableId : string, oldActionName : string, newActionName : string, type: string, valueList : string[]) {
+    public async changeAction(tableId : string, actionId : string, newActionName : string, type: string, valueList : string[]) {
         
         //Find table with specified id
         const table = await this.decisionTableService.getTableById(tableId);
-
         if(table == null){
             throw("No table with matching id exists, cannot add actions to non-existent tables");
         }
+        
+        type = type.toLowerCase();
+        if(!(type === 'boolean' || type ==='text' || type === 'numeric')){
+            throw("Invalid type. Must be one of: boolean, text, numeric");
+        }
+        //type boolean can have 2 values only
+        if(type.toLowerCase() === 'boolean' && valueList.length != 2){
+            throw("Invalid values for specified type");
+        }
+
+        console.log(actionId);
 
         //Loop through the table actions
         for(let i = 0; i < table.actions.length; i++) {
 
             //If you find an action with the given actionId
-            if(table.actions[i].name == oldActionName) {
-
-                let updatedActionId = table.actions[i].id;
+            if(table.actions[i].id == actionId) {
 
                 //Replace the old attributes of the action with the new attributes if they are not empty
                 if(newActionName) {
@@ -78,8 +109,7 @@ export default class actionService{
                 }
 
                 if(valueList.length != 0) {
-                    table.actions[i].valueList = valueList;
-
+                    table.actions[i].valueList = this.getActionItemsFromValues(valueList);
                 }
 
                 this.persistence.saveTable(table);
@@ -89,10 +119,10 @@ export default class actionService{
          }
 
          // If this runs, action with that id not found
-         throw("No action exists with name: " + oldActionName);
+         throw("No action exists with id: " + actionId);
     }
   
-    public async deleteAction(tableId: string, actionName: string) {
+    public async deleteAction(tableId: string, actionId: string) {
 
         //Find and load table by ID
         const table = await this.decisionTableService.getTableById(tableId);
@@ -104,9 +134,9 @@ export default class actionService{
         for(let i = 0; i < table.actions.length; i++) {
 
             //If you find an action with the given actionId
-            if(table.actions[i].name == actionName) {
+            if(table.actions[i].id == actionId) {
+                let removedActionId = table.actions[i].id
                 //Remove it from the actions array, save table and return actionId
-                let removedActionId = table.actions[i].id;
                 table.actions.splice(i, 1);
                 this.persistence.saveTable(table);
                 return removedActionId;
@@ -114,7 +144,7 @@ export default class actionService{
          }
 
          // If this runs, action with that id not found
-         throw("No action exists with name: " + actionName)
+         throw("No action exists with id: " + actionId)
 
     }
   

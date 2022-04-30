@@ -1,4 +1,3 @@
-@CreateConditionFeature
 Feature: Create Condition Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -18,8 +17,8 @@ Acceptance Tests
 Scenario Outline: Create a condition (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
-When I create a condition in table identified as <dec_tag> named <con_name> with type <con_type> and values <con_vals>
+And I have created decision table named <dec_name> for creating condition
+When I create a condition in table named <con_name> with type <con_type> and values <con_vals>
 Then a condition with a non-null id is created
 And the condition named <con_name> with type <con_type> and values <con_vals> is created
 And I receive an error code as <con_response_code> for condition creation
@@ -35,7 +34,7 @@ Scenario Outline: Invalid attributes for condition (Error Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
 And I have created decision table named <dec_name> identified as <dec_tag>
-When I create a condition in table identified as <dec_tag> named <con_name> with type <con_type> and values <con_vals>
+When I create a condition in table named <con_name> with type <con_type> and values <con_vals>
 Then I receive an error code as <con_response_code> for condition creation
 And I receive an error message as <err_msg> for condition creation
 
@@ -48,7 +47,7 @@ Examples:
 Scenario Outline: Create a condition when no table exists (Error Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-When I create a condition in table identified as <dec_tag> named <con_name> with type <con_type> and values <con_vals>
+When I create a condition in table with invalid id named <con_name> with type <con_type> and values <con_vals>
 Then I receive an error code as <con_response_code> for condition creation
 And I receive an error message as <err_msg> for condition creation
 

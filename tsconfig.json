@@ -99,6 +99,7 @@
 
     /* Config for TypeDI */
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
   }
 }

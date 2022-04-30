@@ -1,4 +1,4 @@
-const { startServer, resetFileStore } = require('./TestUtils')
+const { startServer, resetFileStore, shutdown } = require('./TestUtils')
 const chai = require("chai");
 const expect = require("chai").expect;
 const { Given, Then, BeforeAll, AfterAll, Before, setDefaultTimeout } = require("@cucumber/cucumber");
@@ -20,6 +20,7 @@ BeforeAll({timeout: 15 * 2000}, async function (){
 AfterAll({timeout: 15 * 2000}, async function(){
     try {
         await resetFileStore();
+        await shutdown()
     } catch (err) {
         console.log(err);
     }
