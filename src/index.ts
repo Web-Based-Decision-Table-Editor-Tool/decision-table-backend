@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import express, {Application, Request, Response} from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
 import defaultRouter from './routes/routes';
 import { Socket } from 'net';
+import resourceManager from './resource-manager/resource-manager';
 
 const app: Application = express();
 const port: number = 3000;
+const rm = new resourceManager();
 
 app.get('/', (req: Request, res: Response)=>{
     res.send('Server listening on port ' + port);
@@ -18,6 +18,7 @@ app.use("/", defaultRouter);
 
 const server = app.listen(port, ()=> {
     console.log('Server successfully started on port ' + port);
+    rm.performGarbageCollection();
 });
 
 //for cucumber tests

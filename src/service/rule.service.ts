@@ -64,7 +64,7 @@ export default class ruleService{
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
-        console.log(table + "bro its not working")
+
         if(table == null){
             throw("No table with matching Id exists, adding rule failed");
         }
