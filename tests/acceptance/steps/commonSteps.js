@@ -39,6 +39,11 @@ Given('Persistence layer is reset',  async function () {
     }
 });
 
+Given('I have created decision table named {string} identified as {string} with note {string}', async function(dec_name, dec_tag, dec_note) {
+    let tableId = await createDecTable(dec_name, dec_note);
+    expect(1).to.equal(1);
+});
+
 Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
     let tableId = await createDecTable(dec_name, "table description");
     expect(1).to.equal(1);
