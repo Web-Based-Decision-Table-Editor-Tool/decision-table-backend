@@ -1,6 +1,6 @@
 {
     "tableSaveDir": "./fileStore/",
-    "maxTables": 1000,
+    "maxTables": 100,
     "maxActionsInTable": 20,
     "maxRulesInTable": 30,
     "maxConditionsInTable": 20
