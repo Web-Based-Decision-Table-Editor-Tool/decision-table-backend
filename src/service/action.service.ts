@@ -4,7 +4,7 @@ import uuid4 from "uuid4"
 import decisionTableService from './decision-table.service';
 import { Action } from '../types/action';
 import { ValueItem } from '../types/value-item';
-
+import data from '../adminConfig.json';
 
 @Service()
 export default class actionService{
@@ -31,6 +31,8 @@ export default class actionService{
     }
 
     public async addAction(tableId : string, name : string, type: string, valueList : string[]) {
+
+        const maxActionsInTable = (<any>data).maxActionsInTable;
         
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
@@ -67,9 +69,13 @@ export default class actionService{
             valueList: valueItems
         }
 
-        // add action to decTable
-        table.actions.push(action);
-        this.persistence.saveTable(table);
+        if(table.actions.length < maxActionsInTable) {
+            table.actions.push(action);
+            this.persistence.saveTable(table);
+            return action;
+        } else {
+            throw("Max number of actions in a table reached")
+        }
 
         return action;
     }

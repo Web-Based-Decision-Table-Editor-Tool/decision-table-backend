@@ -18,13 +18,16 @@ Scenario Outline: Exceed maximum amount of conditions (Normal Flow)
 Given I am connected to the Decision_Table_Editor_Cloud_Services
 And I have created decision table named <dec_name> for testing condition constraint
 And I have created the maximum amount of conditions allowed
+And I have created the maximum amount of action allowed
 When I create another condition
-Then I receive an error code as 404 for creating a condition
+And I create another action
+Then I receive an error code as <condition_response_code> for creating a condition
+Then I receive an error code as <action_response_code> for creating a action
 
 Examples:
 
-| dec_name       | response_code  |
-| "RobSab01"     |     200        |
-| "RobSab02"     |     200        |
-| "RobSab03"     |     200        |
+| dec_name       | condition_response_code  | action_response_code    |
+| "RobSab01"     |     404                  |           400           |
+| "RobSab02"     |     404                  |           400           |
+| "RobSab03"     |     404                  |           400           |
 
