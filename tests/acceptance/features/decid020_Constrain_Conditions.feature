@@ -23,8 +23,8 @@ Then I receive an error code as 404 for creating a condition
 
 Examples:
 
-| dec_name       | dec_tag | con_name   | con_type   | con_vals                         |  rule_response_code  |  action_name       | action_type   | action_values   | con_num             | act_num          | response_code |
-| "RobSab01"     | "dt_1"  | "Region"   | "text"     | "Domestic,International"         |  201                 | "dec_action1"      | "boolean"     | "Ship, No Ship" | "condition-value-1" | "action-value-2" |    200        |
-| "RobSab02"     | "dt_2"  | "Ship"     | "boolean"  | "Go,No Go"                       |  201                 | "dec_action2"      | "text"        | "Ship, No Ship" | "condition-value-2" | "action-value-1" |    200        |
-| "RobSab03"     | "dt_3"  | "Weight"   | "numeric"  | "<5,>0"                          |  201                 | "dec_action3"      | "boolean"     | "Go, No Go"     | "condition-value-1" | "action-value-2" |    200        |
+| dec_name       | response_code  |
+| "RobSab01"     |     200        |
+| "RobSab02"     |     200        |
+| "RobSab03"     |     200        |
 

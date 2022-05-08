@@ -35,13 +35,13 @@ Given('I have created the maximum amount of conditions allowed', async function 
 
   });
 
-When('I create another condition', async function (action_type, action_name, action_values) {
+When('I create another condition', async function () {
     
-    decid020Response = await chai
-        .request(host)
-        .post("/action")
-        .send({ tableId: tableId, name: action_name, type: action_type, valueList: action_values.split(',') });
-        
+  decid020Response = await chai
+  .request(host)
+  .post("/condition")
+  .send({ tableId: tableId, name: con_name, type: con_type, valueList: con_vals.split(',') });  
+
     createdAction = decid020Response.body.action;
     
   });
