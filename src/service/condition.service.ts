@@ -33,7 +33,7 @@ export default class conditionService{
     }
     public async addCondition(tableId : string, name : string, type: string, valueList : string[]) : Promise<Condition>{
         
-        const maxActionsInTable = (<any>data).maxActionsInTable;
+        const maxConditionsInTable = (<any>data).maxConditionsInTable;
         //find table with id
         const table = await this.decisionTableService.getTableById(tableId);
         if(table == null){
@@ -66,7 +66,7 @@ export default class conditionService{
         }
 
         // add condition to decTable
-        if(table.conditions.length < maxActionsInTable) {
+        if(table.conditions.length < maxConditionsInTable) {
             table.conditions.push(condition);
             this.persistence.saveTable(table);
             return condition;
