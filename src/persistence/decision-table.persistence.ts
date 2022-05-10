@@ -1,18 +1,32 @@
 import { Service } from 'typedi';
 import fs from 'fs';
 import { DecisionTable } from '../types/decision-table';
+import data from '../adminConfig.json';
+import resourceManager from '../resource-manager/resource-manager';
 
 @Service()
 export default class decisionTablePersistence{
     
-    baseDir = './fileStore/'
+    baseDir = (<any>data).tableSaveDir;
     
-    constructor(){
+    constructor(private resourceManager : resourceManager){
     }
 
     public loadTable(tableId: string): DecisionTable | null {
         try {
-            const val : DecisionTable =  JSON.parse(fs.readFileSync(`${this.baseDir}${tableId}.json`, 'utf8'));
+            const file = `${this.baseDir}${tableId}.json`;
+
+            // load contents of file
+            const val : DecisionTable =  JSON.parse(fs.readFileSync(file, 'utf8'));
+
+            // update file stats to current time
+            let changedModifiedTime = new Date();
+            let changedAccessTime = new Date();
+            
+            // assign the new timestamps
+            fs.utimesSync(file, changedAccessTime, changedModifiedTime);
+
+            // return the decision table data
             return val;
         } catch (err) {
             console.error(err)
@@ -24,7 +38,18 @@ export default class decisionTablePersistence{
         //check if file store exists, if not then create it
         this.verifyFileStore();
         try {
-            fs.writeFileSync(`${this.baseDir}${table.id}.json`, JSON.stringify(table))
+            const file = `${this.baseDir}${table.id}.json`;
+            fs.writeFileSync(file, JSON.stringify(table))
+
+            // update file stats to current time
+            let changedModifiedTime = new Date();
+            let changedAccessTime = new Date();
+            
+            // assign the new timestamps
+            fs.utimesSync(file, changedAccessTime, changedModifiedTime);
+
+            // perform garbage collection to ensure max no. of table constraint is being met
+            this.resourceManager.performGarbageCollection();
         } catch (err) {
             console.error(err)
         }
@@ -111,6 +136,16 @@ export default class decisionTablePersistence{
             throw("No such table with matching ID exists. No changes made.")
         } else {
             return dt.name;
+        }
+
+    }
+
+    public async getTableNoteById(id: string): Promise<string> {
+        const dt : DecisionTable | null = this.loadTable(id);
+        if(dt == null) {
+            throw("No such table with matching ID exists. No changes made.")
+        } else {
+            return dt.note;
         }
 
     }

@@ -13,8 +13,9 @@ export class actionController {
       try {
           debugger;
           const { tableId, name , type, valueList } = req.body;
-          const id = await this.actionService.addAction(tableId, name, type, valueList);
-          const response = { id: id, msg: `action created with id: ${id}`, status: 201};
+          const action = await this.actionService.addAction(tableId, name, type, valueList);
+          const id = action.id;
+          const response = { id: id, msg: `action created with id: ${id}`, status: 201, action: action};
           res.status(201).json(response);
       } catch (error) {
           const errorResponse = { msg: error, status: 400}
@@ -25,11 +26,13 @@ export class actionController {
 
     public updateActionById = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { tableId, oldActionName, newActionName, type, valueList } = req.body;
-            const changedAction = await this.actionService.changeAction(tableId, oldActionName, newActionName, type, valueList);
+            const { tableId, actionId, newActionName, type, valueList } = req.body;
+            const changedAction = await this.actionService.changeAction(tableId, actionId, newActionName, type, valueList);
             const response = { msg: `Action with ID: ${changedAction.id} changed`, status: 200, actionId: changedAction.id, actionName: changedAction.name, valueList: changedAction.valueList, actionType: changedAction.type};
             res.send(response);
         } catch (error) {
+            const errorResponse = { msg: error, status: 400}
+            res.status(400).json(errorResponse);
             console.log(error);
         }
     }
@@ -46,8 +49,9 @@ export class actionController {
 
     public deleteAction = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { id, actionName } = req.body;
-            let deletedActionId = await this.actionService.deleteAction(id, actionName);
+            const { tableId, actionId } = req.body;
+            console.log(tableId + "  < TABLE   ACTION >   " + actionId)
+            let deletedActionId = await this.actionService.deleteAction(tableId, actionId);
             const response = { id: deletedActionId, msg: `Action with id: ${deletedActionId} deleted`, status: 204};
             res.send(response)
         } catch (error) {

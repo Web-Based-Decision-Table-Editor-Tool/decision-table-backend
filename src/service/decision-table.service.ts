@@ -2,13 +2,14 @@ import { Service } from 'typedi';
 import { ITableResponse, ITableNameResponse, ErrorResponse, ITableNoteResponse } from "../types/interfaces";
 import { DecisionTable } from "../types/decision-table";
 import decisionTablePersistence from "../persistence/decision-table.persistence";
+import uuid4 from 'uuid4';
 
 @Service()
 export default class decisionTableService{
-    lastId: number;
+    // lastId: number;
     
     constructor(private persistence : decisionTablePersistence){
-        this.lastId = -1;
+        // this.lastId = -1;
     }
 
     public async addTable(name: string, note: string): Promise<ITableResponse> {
@@ -30,7 +31,8 @@ export default class decisionTableService{
             email : "",
             lastUsedDate : new Date(),
             actions: [],
-            conditions: []
+            conditions: [],
+            rules: []
         }
 
         this.persistence.saveTable(table);
@@ -38,11 +40,12 @@ export default class decisionTableService{
     }
 
     private async generateTableId(){
-        if(this.lastId < 0){
-            this.lastId = await this.persistence.getLastAssignedId();
-        }
-        this.lastId++;
-        return `dt_${this.lastId}`;
+        // if(this.lastId < 0){
+        //     this.lastId = await this.persistence.getLastAssignedId();
+        // }
+        // this.lastId++;
+        // return `dt_${this.lastId}`;
+        return uuid4();
     }
 
     public async deleteTable(id: string): Promise<ITableResponse | ErrorResponse> {
@@ -83,6 +86,15 @@ export default class decisionTableService{
             return {name, status: 200}
         } catch (error) {
             return { name: "", status: 404}
+        }
+    }
+
+    public async getTableNoteById(id: string): Promise<ITableNoteResponse> {
+        try {
+            const note = await this.persistence.getTableNoteById(id);
+            return {note, status: 200}
+        } catch (error) {
+            return { note: "", status: 404}
         }
     }
 

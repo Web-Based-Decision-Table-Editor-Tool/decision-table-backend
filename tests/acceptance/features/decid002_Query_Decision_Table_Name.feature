@@ -1,4 +1,3 @@
-@ChangeDecisionTableNameFeature
 Feature: Query Name of a Decision Table Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -18,8 +17,8 @@ Acceptance Tests
 Scenario Outline: Query a decision table Normal Flow / Error Flow
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag>
-When I query the name of Decision Table <dec_tag>
+And I have created decision table named <dec_name>
+When I query the name of Decision Table
 Then the returned name should match <dec_name>
 And I receive an error code as <dec_response_code> for querying a table
 

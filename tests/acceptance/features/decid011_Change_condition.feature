@@ -1,4 +1,3 @@
-@ChangeDecisionTableNameFeature
 Feature: Change Condition Story
 
 As a developer who uses the Decision_Table_Editor_Cloud_Services to build applications
@@ -11,7 +10,7 @@ Acceptance Tests
 Scenario Outline: Change a condition (Normal Flow)
 
 Given I am connected to the Decision_Table_Editor_Cloud_Services
-And I have created decision table named <dec_name> identified as <dec_tag> for condition
+And I have created decision table named <dec_name> for updating condition
 And I have created a condition named <con_name> with type <con_type> and values <con_vals> for this table
 When I change the condition <con_name> with id <con_id> to condition <new_con_name> with type <new_con_type> and values <new_con_vals> 
 Then I receive the new name matching <new_con_name> for condition change

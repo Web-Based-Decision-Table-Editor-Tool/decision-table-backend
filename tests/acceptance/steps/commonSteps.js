@@ -1,4 +1,4 @@
-const { startServer, resetFileStore } = require('./TestUtils')
+const { startServer, resetFileStore, shutdown } = require('./TestUtils')
 const chai = require("chai");
 const expect = require("chai").expect;
 const { Given, Then, BeforeAll, AfterAll, Before, setDefaultTimeout } = require("@cucumber/cucumber");
@@ -20,6 +20,7 @@ BeforeAll({timeout: 15 * 2000}, async function (){
 AfterAll({timeout: 15 * 2000}, async function(){
     try {
         await resetFileStore();
+        await shutdown()
     } catch (err) {
         console.log(err);
     }
@@ -36,6 +37,11 @@ Given('Persistence layer is reset',  async function () {
     } catch (err) {
           console.log(err);
     }
+});
+
+Given('I have created decision table named {string} identified as {string} with note {string}', async function(dec_name, dec_tag, dec_note) {
+    let tableId = await createDecTable(dec_name, dec_note);
+    expect(1).to.equal(1);
 });
 
 Given('I have created decision table named {string} identified as {string}', async function(dec_name, dec_tag) {
